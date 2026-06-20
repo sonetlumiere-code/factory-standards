@@ -36,8 +36,9 @@ Suggested order of authoring is roughly top-to-bottom (foundations first).
 - **`testing-strategy.md`** — the test pyramid for the stack: unit (pure helpers),
   integration (real Postgres via testcontainers), architecture/guard tests, e2e
   (Playwright), what each layer is responsible for, coverage expectations.
-- **`data-and-privacy.md`** — data classification, PII handling, retention/TTL, GDPR/AR
-  (Ley 25.326) basics, backups + restore drills, audit logs, data-subject requests.
+- **`data-and-privacy.md`** — data classification, PII handling, retention/TTL, the
+  data-protection law of your jurisdiction (e.g. GDPR), backups + restore drills, audit
+  logs, data-subject requests.
 - **`accessibility.md`** — WCAG 2.2 AA target, keyboard nav, focus management, semantic
   HTML, the skip-link pattern, automated a11y checks in CI.
 - **`performance-budgets.md`** — Core Web Vitals targets, bundle-size budgets, image
@@ -54,6 +55,6 @@ Suggested order of authoring is roughly top-to-bottom (foundations first).
   comments, PRs, and ADRs can reference it. Append-only; never renumber.
 - **MUST / SHOULD / MAY** (RFC-2119 sense) on every item so an agent knows what's
   non-negotiable vs. recommended.
-- **Reference implementation per item.** Point at a real file in a real project — recipes
-  drift, code doesn't. (`multi-ecommerce` and `gp-learning` are the current references.)
+- **Conventional location per item.** Name the standard file/path a requirement lives in
+  (e.g. `lib/env/server.ts`) so an agent knows where it goes — recipes drift, code doesn't.
 - **Keep them agent-readable.** Short rationale, concrete pointer, no fluff.

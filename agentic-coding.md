@@ -10,8 +10,8 @@ surface the agent reads before every change, and automated guards fail the build
 when code and docs diverge.** Code is ground truth; docs describe it; tests keep
 them honest.
 
-Both reference projects implement versions of this. They're complementary, and
-this doc is the **synthesis of the best of each** — adopt all of it on new projects.
+Two complementary patterns (below) have proven out in practice; this doc is the
+**synthesis** — adopt all of it on new projects.
 
 ## Start here — copy the skeleton
 
@@ -36,57 +36,52 @@ piece exists.
 
 ---
 
-## Which reference repo is more optimized? (you asked)
+## Two patterns, one synthesis
 
-**`gp-learning` has the more advanced agentic docs system.** It treats the spec
-as a first-class, machine-verified artifact:
+Two complementary patterns make docs executable. Adopt **both** — neither alone is complete.
+
+### Pattern A — the citation-verified spec (the base)
+
+Treat the spec as a first-class, machine-verified artifact:
 
 - A dedicated **`docs/spec/`** — one topic per file (system-overview, domain-model,
-  business-rules, invariants, constraints, workflows, authorization-model,
-  multi-tenancy, state-machines, events, integrations).
-- **Confidence levels** on every statement — `PROVEN` / `LIKELY` / `UNKNOWN`. Behavior
-  that can't be proven from code is marked `UNKNOWN`, **never invented**. This single
-  convention is the biggest anti-hallucination lever there is.
-- **Evidence citations** in the form `` `path` › `symbol` `` (not `file:line`, which rots
-  on every refactor).
-- **Citation tests** (`tests/spec/citations.test.ts`) that fail the build when a cited
-  symbol is renamed/removed — *and* when a new exported server action has **no** spec
-  reference, nudging new behavior into the spec.
-- A **generated `spec.json`** index (`pnpm spec:json`) and a **generated
-  `schema.generated.md`** (`pnpm spec:schema`), each guarded by a staleness test.
-- A clear **precedence rule**: Code → `docs/spec/` → `AGENTS.md`. "If code and the spec
+  business-rules, invariants, constraints, workflows, authorization-model, multi-tenancy,
+  state-machines, events, integrations).
+- **Confidence levels** on every statement — `PROVEN` / `LIKELY` / `UNKNOWN`. Behavior that
+  can't be proven from code is marked `UNKNOWN`, **never invented**. This single convention
+  is the biggest anti-hallucination lever there is.
+- **Evidence citations** in the form `` `path` › `symbol` `` (not `file:line`, which rots on
+  every refactor).
+- **Citation tests** that fail the build when a cited symbol is renamed/removed — *and* when
+  a new exported action has **no** spec reference, nudging new behavior into the spec.
+- A **generated spec index** (`spec.json`) and a **generated schema doc**, each guarded by a
+  staleness test.
+- A clear **precedence rule**: Code → `docs/spec/` → agent door. "If code and the spec
   disagree, the spec is wrong — fix the spec."
 
-**`multi-ecommerce` is stronger on a few complementary things** worth keeping:
+### Pattern B — the stable-ID catalog + guards (the muscles)
 
-- A **stable-ID catalog** across docs — `I` (invariants), `B/O/T/OR` (constraints/decisions),
-  `R` (risk register) — cited in commits, comments, PRs. IDs are **append-only, never
-  renumbered**, enforced by `docs-catalog-integrity.test.ts` (a locked ID snapshot).
+Make the rules addressable and *prove they're held*:
+
+- A **stable-ID catalog** across docs — e.g. `INV` (invariants), `C` (constraints/decisions),
+  `R` (risks) — cited in commits, comments, PRs. IDs are **append-only, never renumbered**,
+  enforced by a catalog-integrity test (a locked ID snapshot).
 - A **`refactor-playbook.md`**: "if you're touching X, here are the pre-merge checks" — a
   per-change checklist indexed by what you're modifying.
-- A **`risk-register.md`** ("if you change X, Y breaks") and **`anti-patterns.md`**
-  (common agent mistakes, pre-empted).
-- **Architecture-invariant guards** (`architecture-invariants.test.ts`): tenant-isolation,
-  RBAC, action-result shape — failing the build on a violation, not just a doc cite.
-- **Link-integrity** + **rationale-anchor** tests that fail when a doc references a path or
-  anchor that no longer exists.
+- A **`risk-register.md`** ("if you change X, Y breaks") and **`anti-patterns.md`** (common
+  agent mistakes, pre-empted).
+- **Architecture-invariant guards**: tenant-isolation, RBAC, action-result shape — failing
+  the build on a violation, not just a doc cite.
+- **Link-integrity** tests that fail when a doc references a path or anchor that no longer exists.
 
-**The canonical factory approach = gp-learning's spec model as the base, plus
-multi-ecommerce's catalog + guards layered on.** In one line: *gp-learning tells you
-what's true and proves the references resolve; multi-ecommerce makes the rules
-addressable and proves they're actually enforced.* Concretely:
+### The synthesis
 
-- **Skeleton** (from gp-learning): `docs/spec/` one-topic-per-file, confidence levels,
-  `` `path` › `symbol` `` citations, a citation test, a generated `spec.json`, precedence
-  *Code → spec → agent door*.
-- **Muscles** (from multi-ecommerce): an append-only stable-ID catalog with a
-  catalog-integrity test, a `refactor-playbook.md`, an `anti-patterns.md`, and
-  architecture-invariant guards that prove a rule is *held* in code, not merely *cited*.
-
-Neither alone is complete: citations prove a reference *resolves*; stable IDs make rules
-*addressable*; architecture guards prove the rule is actually *held*. The
-[`skeleton/`](./skeleton/) ships the base + the two guard tests; add the playbook,
-anti-patterns, and architecture guards as the project grows.
+Pattern A as the base, Pattern B layered on. In one line: *A tells you what's true and proves
+the references resolve; B makes the rules addressable and proves they're actually enforced.*
+Citations prove a reference *resolves*; stable IDs make rules *addressable*; architecture
+guards prove the rule is actually *held*. The [`skeleton/`](./skeleton/) ships Pattern A + the
+two core guard tests (citation + catalog); add the playbook, anti-patterns, and
+architecture-invariant guards as the project grows.
 
 ---
 
@@ -172,7 +167,7 @@ Concrete, high-leverage moves — roughly ordered by payoff:
 
 7. **A "docs follow code in the same change" gate.** A CI nudge (warn, or block) when
    behavior files (`actions/`, `drizzle/schema/`) change without a matching `docs/spec/`
-   update. _Ref:_ gp-learning's `spec-sync` job + multi-ecommerce's migration-presence check.
+   update — and a migration-presence check (schema changed but no new migration file).
 
 8. **An anti-patterns doc, fed by real mistakes.** Each time an agent makes a wrong-but-
    plausible move, add it to `anti-patterns.md` with the right pattern. The corpus of
@@ -182,13 +177,14 @@ Concrete, high-leverage moves — roughly ordered by payoff:
    tenant-isolation work, run a second agent prompted to *refute* the change against the
    invariants before merge. Cheap insurance on the high-blast-radius areas.
 
-10. **Golden-path reference implementations.** For every "add a new X" (provider, carrier,
-    plan, section, event), point at the most recent real example in code — "copy this." Recipes
-    as prose drift; recipes as a cited file don't. _Ref:_ `workflows.md` in both repos.
+10. **Golden-path reference implementations.** For every "add a new X" (provider, plan,
+    section, event), point at the most recent real example in code — "copy this." Recipes as
+    prose drift; recipes as a cited file don't. A `workflows.md` that maps "add a new X" → the
+    canonical example is the home for this.
 
 11. **A house design-reference rule.** When designing new UX/schema, name the real-world
-    product you're mirroring (Shopify / Stripe / TiendaNube / Linear…) in the commit/ADR.
-    Stops the agent inventing novel patterns where an established one fits.
+    product you're mirroring (e.g. Shopify / Stripe / Linear) in the commit/ADR. Stops the
+    agent inventing novel patterns where an established one fits.
 
 12. **ADRs once past pre-production.** A lightweight `docs/adr/` registry for significant,
     hard-to-reverse decisions, with a template. The agent reads them before re-litigating a

@@ -16,7 +16,7 @@ in [path].`) — don't grow a "what landed" changelog here; git is the record.
 **Sketch:**
 
 - <Bullet the intended approach: schema change, the single swap point, the edge cases.>
-- <Cite the real-world pattern you'd mirror (Shopify / Stripe / TiendaNube / Linear).>
+- <Cite the real-world pattern you'd mirror (e.g. Shopify / Stripe / Linear).>
 
 **Open decisions:** <the choices to make when you pick it up.>
 

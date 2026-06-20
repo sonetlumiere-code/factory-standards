@@ -80,15 +80,14 @@ export default defineConfig([
 ])
 ```
 
-**Guards worth adding per project** (each is a real rule in the reference repos):
+**Guards worth adding per project** (all proven, high-leverage rules):
 
-- **Banned `process.env` outside the env module** (above). _Ref:_ `multi-ecommerce/eslint.config.mjs`.
+- **Banned `process.env` outside the env module** (the `PROCESS_ENV_RULE` above).
 - **Money: ban `Math.round(X * 100)` outside the `toCents()` boundary** — forces all
-  float→integer-cents conversion through one helper. _Ref:_ same file, `MONEY_CENTS_RULE`.
+  float→integer-cents conversion through one helper (a sibling `no-restricted-syntax` rule).
 - **Drizzle safety: `eslint-plugin-drizzle`** with `enforce-delete-with-where` +
   `enforce-update-with-where` — a `DELETE`/`UPDATE` without a `WHERE` fails lint.
-- **Import sorting: `eslint-plugin-simple-import-sort`** — deterministic import order, no
-  churn. _Ref:_ `gp-learning/eslint.config.mjs`.
+- **Import sorting: `eslint-plugin-simple-import-sort`** — deterministic import order, no churn.
 - **CQRS / layering: the `data/` read-only or `server-only` boundary** as an override block.
 
 The pattern: a recurring review nit or a "you must always do X here" rule becomes a guard,
@@ -113,7 +112,7 @@ exceptions explicitly, with a comment saying why — never a blanket disable.
 ```
 
 - `pnpm typecheck` = `tsc --noEmit`, run separately from `next build` so CI gets a fast,
-  DB-free type gate. _Ref:_ both repos' CI.
+  DB-free type gate.
 - Never inline `$inferSelect`/`$inferInsert` — derive types in one `drizzle/types.ts` and
   import from there.
 
