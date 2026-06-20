@@ -85,7 +85,7 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
 > limiting, CSP, webhook verification, secret encryption, audit logging.
 
 - **SEC-1 (MUST)** Set security response headers on every route — via `next.config.ts`
-  `headers()` or middleware:
+  `headers()` or `proxy.ts` (Next 16's renamed middleware — see NEXT-7):
   - `Strict-Transport-Security` (HSTS)
   - `X-Content-Type-Options: nosniff`
   - `X-Frame-Options: SAMEORIGIN` (or `DENY` if nothing same-origin frames your pages; a
@@ -188,9 +188,13 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
 - **NEXT-5 (SHOULD)** Configure `images.remotePatterns` for every external image host
   (allowlist, not wildcard). _Pattern:_ `next.config.ts`.
 - **NEXT-6 (SHOULD)** Choose Edge vs Node runtime deliberately and document it. DB-backed
-  middleware/routes run on Node (Neon driver + `ws` are Node-only).
-- **NEXT-7 (MUST)** Auth/host-rewrite middleware lives in the project's middleware entry
-  (`middleware.ts`, or a named entry the framework is configured to use).
+  proxy/routes run on Node (Neon driver + `ws` are Node-only).
+- **NEXT-7 (MUST)** Auth/host-rewrite request interception lives in **`proxy.ts`** at the
+  project root — **not** `middleware.ts`. Next.js 16 (v16.0.0) **deprecated and renamed
+  `middleware` → `proxy`** (the function is `proxy()`, defaults to the Node.js runtime); a
+  scaffold on Next ≥16 must use `proxy.ts`. Migrate an existing app with the codemod
+  `npx @next/codemod@canary middleware-to-proxy .`. Treat `proxy` as a last resort — prefer
+  auth checks inside Server Actions / route handlers (proxy can be bypassed by matcher gaps).
 
 ## 9. CI/CD
 

@@ -69,4 +69,15 @@ ownership indexes as missing; all four existed.
 mark **unknown**, never gap. Same rule as the spec's "mark UNKNOWN, never invent"
 ([audit-app](./.claude/commands/audit-app.md)).
 
+### AP-8 — Using the deprecated `middleware.ts` on Next 16
+**Wrong:** a Next 16 app puts auth/request interception in `middleware.ts` with an exported
+`middleware()` function.
+**Why it's plausible:** `middleware.ts` was the convention for years and most examples/snippets
+still show it.
+**Reality:** Next.js **v16.0.0 deprecated and renamed `middleware` → `proxy`**. On Next ≥16 the
+file is `proxy.ts` and the function is `proxy()`. (Caught in a real bootstrap — the app used
+`middleware.ts` because the baseline's NEXT-7 still said so; both are fixed now.)
+**Right pattern:** use `proxy.ts` (NEXT-7). Migrate with `npx @next/codemod@canary
+middleware-to-proxy .`. And prefer auth inside Server Actions/route handlers over proxy.
+
 <!-- Append new anti-patterns below as dogfooding surfaces them. -->

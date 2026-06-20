@@ -25,6 +25,7 @@ scaffold stays green.
 | **action-result shape** | actions return `ok()`/`fail()`, never raw `{ error }` | apps using the typed action-result convention | snippet below |
 | **money integer cents** | `Math.round(x*100)` banned outside `lib/money.ts` | apps handling money | **lint**, not a test — see [tooling-config.md](../../../tooling-config.md) `MONEY_RULE` |
 | **public-row boundary** | client-bound code uses `Public*`/`*Safe`, never raw rows | apps sending DB rows to the client | convention + types (no simple static guard — assert in review / types) |
+| **no deprecated middleware** | no `middleware.ts` at root on Next ≥16 (use `proxy.ts`) | Next 16 apps | snippet below (AP-8 / NEXT-7) |
 
 Keep **one** scope-isolation block (tenant **or** ownership), per the tenancy answer. Delete
 the other — see [bootstrap-interactive.md](../../../bootstrap-interactive.md) Q2.
@@ -62,6 +63,21 @@ describe("server actions return a typed result — INV-4", () => {
       ).toBe(true)
     })
   }
+})
+```
+
+### no deprecated middleware (NEXT-7 / AP-8)
+```ts
+import fs from "node:fs"
+describe("no deprecated middleware.ts (Next 16 → proxy.ts)", () => {
+  it("uses proxy.ts, not the deprecated middleware.ts", () => {
+    const has = (f: string) => fs.existsSync(path.join(ROOT, f)) || fs.existsSync(path.join(ROOT, "src", f))
+    expect(
+      has("middleware.ts") === false && has("middleware.js") === false,
+      `Next 16 renamed middleware → proxy. Rename to proxy.ts (function proxy()) — ` +
+        `codemod: npx @next/codemod@canary middleware-to-proxy .`
+    ).toBe(true)
+  })
 })
 ```
 
