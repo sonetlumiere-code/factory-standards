@@ -21,7 +21,8 @@ Treat `<FACTORY_STANDARDS_PATH>/` as binding defaults. Before writing any code:
 
 2. **INTERVIEW** — follow `bootstrap-interactive.md`'s three-tier questionnaire with the
    `AskUserQuestion` tool:
-   - **Tier 1 (always confirm):** project name, archetype, **primary language/locale**
+   - **Tier 1 (always confirm):** project name, archetype (static-site / full-stack web /
+     API service / desktop), **primary language/locale**
      (when there's a UI — don't default to English silently), **tenancy** (confirm even if
      implied — it picks the security guard), auth & roles.
    - **Tier 2 (adaptive — skip if implied, "no" prunes):** payments, transactional email

@@ -44,11 +44,13 @@ it** (`./<name>`). The name is the user's call, not inferable — propose your b
 let them override before anything else. Use it for the folder and the `<Project>`
 placeholders.
 
-**Q1 — Archetype.** Static site / landing · Full-stack web app · API-only / backend service.
+**Q1 — Archetype.** Static site / landing · Full-stack web app · API-only / backend service ·
+Desktop app.
 - Picks the stack file in `stacks/` and which baseline items apply.
 - **Prunes:** `static-site` → skip tenancy, payments, email, uploads unless the user adds an
   authenticated area (then it's really full-stack — say so and switch); `api-service` →
-  skip SEO (N/A — no public HTML).
+  skip SEO (N/A — no public HTML); `desktop` → skip SEO; tenancy/auth/payments apply only if
+  it's networked (talks to a backend) — if standalone, most are N/A.
 
 **Q1b — Primary language / locale.** *(ask whenever there's a UI: static or full-stack)*
 Confirm the language the UI and content ship in (e.g. `en-US`, `es-AR`). **Don't default to
@@ -110,6 +112,7 @@ English silently** — it's the user's call and it shapes every string. Then ask
 | **Archetype** | Static site | Stack: [stacks/static-site.md](./stacks/static-site.md) (Astro). Baseline: headers/deps/CI apply; DB-* and auth SEC-* → N/A. SEO is in-scope. |
 | | Full-stack web | Stack: [stacks/full-stack-web.md](./stacks/full-stack-web.md) (Next.js). Full data spine + baseline apply. |
 | | API service | Stack: [stacks/api-service.md](./stacks/api-service.md) (Hono). Data spine applies; UI/SEO out. Per-route headers + CORS allowlist. |
+| | Desktop app | Stack: [stacks/desktop.md](./stacks/desktop.md) (Tauri v2 + React/Vite). Universal core; data spine only if local SQLite / networked backend. SEO N/A. |
 | **Tenancy** | Single-admin / Single-tenant | Keep the **ownership-isolation** guard block (`OWNER_ID`); delete the tenant block. CLAUDE.md Rule 1 / INV-1 use the ownership variant. No `tenantId` column. |
 | | Multi-tenant | Keep the **tenant-isolation** guard block (`TENANT_ID`); delete the ownership block. Scope every `data/*` query by tenant id; index `(tenant_id, …)` (DB-7). |
 | **Auth** | None | No Better Auth; the authorization guard stays inert. Document why in the deferral table. |
@@ -169,8 +172,9 @@ decisions above:
 
 0. **Scaffold with the framework's official CLI first**, then layer the standards on top —
    don't hand-write the base tree. Use `pnpm create next-app@latest <name>` (full-stack),
-   `pnpm create astro@latest <name>` (static site), or `pnpm create hono@latest <name>`
-   (API). This keeps the base structure and versions current with the framework; then pin
+   `pnpm create astro@latest <name>` (static site), `pnpm create hono@latest <name>` (API),
+   or `pnpm create tauri-app@latest <name>` (desktop). This keeps the base structure and
+   versions current with the framework; then pin
    exact versions and apply the steps below. Set the primary locale (Q1b) in the framework's
    i18n config as part of this step. Then **record the standards version** — write
    `.factory-version` at the app root from

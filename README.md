@@ -14,7 +14,7 @@ at the relevant file(s) and tell it to treat them as binding defaults.
 
 | Doc | Status | Covers |
 | --- | --- | --- |
-| [stacks/](./stacks/) | ✅ ready | The canonical stacks, **keyed by archetype** — a shared spine (language, validation, tooling, data) plus per-archetype files for static-site (Astro), full-stack web (Next.js), and API service (Hono). Start at [stacks/README.md](./stacks/README.md) |
+| [stacks/](./stacks/) | ✅ ready | The canonical stacks, **keyed by archetype** — a shared spine (language, validation, tooling, data) plus per-archetype files for static-site (Astro), full-stack web (Next.js), API service (Hono), and desktop (Tauri). Start at [stacks/README.md](./stacks/README.md) |
 | [bootstrap-interactive.md](./bootstrap-interactive.md) | ✅ ready | **The primary invocation** — an adaptive questionnaire (archetype, tenancy, auth, payments, SEO, background) that maps answers → pre-set factory decisions, prints a decision sheet, then scaffolds |
 | [bootstrap-prompt.md](./bootstrap-prompt.md) | ✅ ready | Fallback invocation: a static copy-paste prompt (+ skill notes) for when every choice is already known, with acceptance criteria |
 | [`/audit-app`](./.claude/commands/audit-app.md) | ✅ ready | Slash command to audit an existing app against all standards — gap report by ID + severity, uses `.factory-version` to separate gaps from drift; `--fix` applies safe in-repo gaps |

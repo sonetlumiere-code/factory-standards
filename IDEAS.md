@@ -116,11 +116,11 @@ The guards are the most valuable, most copy-pasted asset. Promote them from per-
 a documented catalog (scope, authz, server-only, money, public-boundary, action-result) the
 bootstrap composes from. Medium effort.
 
-## v2-7. Desktop archetype (Tauri) — TODO
-Add a `stacks/desktop.md` archetype when a real desktop app needs it. Default: **Tauri v2**
-(OS webview, small bundle, Rust backend, strong default security) reusing the React/Tailwind/
-shadcn UI via Vite; **Electron** only as a justified deviation (Node/Chromium parity needs).
-Frontend is SPA/static (Vite+React or Next `output: export`), not SSR. Defer until dogfooded.
+## v2-7. Desktop archetype (Tauri) ✅ DONE
+Added [stacks/desktop.md](./stacks/desktop.md): **Tauri v2** default (OS webview, small bundle,
+Rust backend, strong default security) reusing React/Tailwind/shadcn via Vite; **Electron** only
+as a justified deviation. Wired into the stacks chooser, the questionnaire (Q1), and the
+scaffolder step (`create-tauri-app`). Not yet dogfooded — first real desktop app will surface refinements.
 
 ## v2-6. Formalize the audit mode ✅ DONE
 Done: the `/audit-app` slash command

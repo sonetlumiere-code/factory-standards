@@ -23,6 +23,7 @@ The interactive bootstrap asks for this; if you scaffold by hand, choose here.
 | **Static site / landing** | Marketing, docs, content; little/no per-user state | [static-site.md](./static-site.md) | **Astro** | Astro components + Tailwind |
 | **Full-stack web app** | Auth'd product with its own UI and DB | [full-stack-web.md](./full-stack-web.md) | **Next.js** (App Router) | React + Tailwind + shadcn/ui |
 | **API-only / backend service** | Headless API, webhooks, jobs; no UI | [api-service.md](./api-service.md) | **Hono** | none |
+| **Desktop app** | Native macOS/Windows/Linux app | [desktop.md](./desktop.md) | **Tauri** v2 | React + Vite + Tailwind + shadcn |
 | _mobile, CLI, …_ | later | — | (add when a real project needs one) | — |
 
 > **Spine applicability.** Static sites use the **universal core** only. Full-stack
