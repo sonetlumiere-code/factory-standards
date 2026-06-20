@@ -19,12 +19,18 @@ Treat `<FACTORY_STANDARDS_PATH>/` as binding defaults. Before writing any code:
    `bootstrap-interactive.md`, `tooling-config.md`,
    `vercel-nextjs-production-baseline.md`, `agentic-coding.md`, `skeleton/`, `recipes/`.
 
-2. **INTERVIEW** — follow `bootstrap-interactive.md`: ask the **adaptive questionnaire**
-   (confirm the project name first, then archetype, tenancy, auth, payments, public
-   pages/SEO, background work) with the `AskUserQuestion` tool, skipping any question
-   already implied by the description or an earlier answer — but **always confirm the
-   name** (it's not inferable). Map the answers to the pre-set factory decisions, then
-   **print the decision sheet and STOP** for my go before writing code.
+2. **INTERVIEW** — follow `bootstrap-interactive.md`'s three-tier questionnaire with the
+   `AskUserQuestion` tool:
+   - **Tier 1 (always confirm):** project name, archetype, **tenancy** (confirm even if
+     implied — it picks the security guard), auth & roles.
+   - **Tier 2 (adaptive — skip if implied, "no" prunes):** payments, transactional email
+     (→ Resend), file/media uploads (→ Cloudinary), public pages/SEO (+ i18n), background
+     work. Ask the **capability, not the provider** (the stack fixes the provider).
+   - **Tier 3 (defaults, don't ask):** Sentry stub, Vercel Analytics, rate limiting —
+     shown in the decision sheet as overridable.
+
+   Map the answers to the pre-set factory decisions, then **print the decision sheet and
+   STOP** for my go before writing code.
 
 Then, after I confirm:
 
