@@ -1,6 +1,10 @@
 # macOS
 .DS_Store
 
+# Dependencies / tool caches (e.g. vitest cache from validating the skeleton)
+node_modules/
+.vite/
+
 # Editor
 .vscode/
 .idea/
