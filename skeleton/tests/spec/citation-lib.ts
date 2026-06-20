@@ -29,7 +29,7 @@ const HAS_EXT = /\.[A-Za-z]+$/
 // directory — root-only mentions and `.md` names in prose aren't evidence.
 const BARE_SOURCE = /\.(ts|tsx)$/
 
-// `path › symbol` pairs, e.g. `` `data/store/order.ts` › `createOrder` ``.
+// `path › symbol` pairs, e.g. `` `data/users.ts` › `createUser` ``.
 const PAIR_RE = new RegExp("`([^`]+)`\\s*" + SEP + "\\s*`([^`]+)`", "g")
 // Any backtick token NOT immediately followed by `›` (so the path half of a pair
 // isn't double-counted as a bare citation).

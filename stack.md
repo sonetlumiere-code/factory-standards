@@ -62,7 +62,7 @@ Pin exact versions in `package.json`/lockfile per project.
 | Transactional email | **Resend** | Simple API; wrap sends in the outbox so they can't be lost. |
 | Image storage / CDN | **Cloudinary** | Uploads + transforms; allowlist its host in `next.config` and CSP. |
 | Background work | **`@vercel/functions` `waitUntil`** | Survives the response on serverless; wrap transient ops in retry-with-backoff. |
-| Reliable side effects | **transactional outbox** (`lib/events/*`) | Emit in the business transaction; a dispatcher delivers with retry/dead-letter. See [baseline REL-1](./vercel-nextjs-production-baseline.md). |
+| Reliable side effects | **transactional outbox** (`lib/events/*`) | Emit in the business transaction; a dispatcher delivers with retry/dead-letter. Drop-in: [recipes/transactional-outbox](./recipes/transactional-outbox/). |
 | Scheduled work | **Vercel Cron** (`vercel.json`) | Bearer-guarded route handlers; Pro plan for sub-daily. |
 | Rate limiting | **Upstash Redis** or **Vercel KV** | Distributed — in-memory limiters are useless on a serverless fleet. |
 | Dates / timezones | **date-fns** (+ **date-fns-tz**) | Explicit, tree-shakeable; no global mutable locale. |

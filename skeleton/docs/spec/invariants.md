@@ -4,7 +4,7 @@ Always-true conditions of the system. Each has a stable, append-only ID (`INV-<n
 a **confidence level**, an **evidence citation**, and its **enforcement mechanism**.
 
 > Format reminder: real citations are `` `path` › `symbol` `` with a real file path
-> (e.g. a path like `data/<feature>/orders.ts` › `createOrder`, but pointing at a file
+> (e.g. a path like `data/<feature>/users.ts` › `createUser`, but pointing at a file
 > that exists). The examples below use `<placeholder>` paths on purpose so the citation
 > guard skips them while you scaffold — replace them (and delete this reminder) with real
 > citations as you fill the spec in.

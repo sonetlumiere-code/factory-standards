@@ -142,7 +142,8 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
 - **REL-1 (MUST)** Side effects that must not be lost (emails, downstream calls) go through
   a **transactional outbox** — the event commits in the same DB transaction as the
   business write, a dispatcher delivers it after commit with retry/backoff/dead-letter.
-  Fire-and-forget `waitUntil` can silently drop work. _Pattern:_ `lib/events/{emit,dispatcher,consumers}.ts`.
+  Fire-and-forget `waitUntil` can silently drop work. Drop-in implementation:
+  [recipes/transactional-outbox](./recipes/transactional-outbox/).
 - **REL-2 (MUST)** Idempotency keys on create/charge operations so a client retry can't
   double-create.
 - **REL-3 (SHOULD)** Background work that survives the response uses `waitUntil`
