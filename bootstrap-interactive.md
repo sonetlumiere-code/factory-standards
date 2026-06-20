@@ -181,7 +181,9 @@ decisions above:
    `.editorconfig`, standard scripts, engine + `packageManager` pins, `.nvmrc`.
 2. **Agentic docs** — copy `skeleton/` in. Fill `CLAUDE.md` + `docs/spec/` for THIS app
    with real `path › symbol` citations (not placeholders). **Keep only the scope guard the
-   tenancy answer selected**; adapt its token + the permission-check matcher. Wire `tests/**`
+   tenancy answer selected**; adapt its token + the permission-check matcher. **Compose the
+   other guards from `tests/architecture/CATALOG.md`** that the answers call for (server-only
+   for any data layer, action-result for the typed-result convention, etc.). Wire `tests/**`
    into the runner; get every guard GREEN.
 3. **Baseline** — apply every applicable MUST in
    [vercel-nextjs-production-baseline.md](./vercel-nextjs-production-baseline.md). Then print

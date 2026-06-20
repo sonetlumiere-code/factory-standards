@@ -75,14 +75,19 @@ which baseline items apply + what you're deferring) BEFORE writing code.
   silently skipped means the standard didn't stick — tighten its wording.)
 - At least one project-specific architecture guard authored (Pattern B, not just Pattern A).
 
-## A lighter mode — audit an existing repo
+## A lighter mode — audit an existing repo (shipped)
 
-To check a project (not scaffold one):
+To check a project instead of scaffolding one, use the **`/audit-app`** slash command
+([`.claude/commands/audit-app.md`](./.claude/commands/audit-app.md)). It audits an app against
+**all** the standards (not just the baseline), uses the app's `.factory-version` to separate
+genuine gaps from drift since it was generated, and reports a table by ID with severity and the
+file that would change. `--fix` applies the safe in-repo gaps. Run it periodically over shipped
+apps — that's the compliance telemetry. Manual fallback:
 
 ```
-Audit this repo against /{{PATH}}/factory-standards/vercel-nextjs-production-baseline.md.
-Report gaps as a table by ID (e.g. SEC-1, OBS-4) with severity and the file that would
-change. Don't fix anything yet — just the gap report.
+Audit this repo against /{{PATH}}/factory-standards/ (baseline + security.md + seo.md +
+agentic-coding/skeleton + tooling-config). Report gaps as a table by ID (e.g. SEC-1, OBS-4)
+with severity and the file that would change. Don't fix anything yet — just the gap report.
 ```
 
 ## Turning this into a reusable command

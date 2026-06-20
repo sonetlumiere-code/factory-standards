@@ -21,6 +21,7 @@ tests/spec/
   snapshots/catalog-ids.json    → the locked ID list (one append per new ID)
 tests/architecture/
   architecture-invariants.test.ts → scope-isolation (tenant or ownership) + authz guards (Pattern B)
+  CATALOG.md                      → menu of composable guards (server-only, action-result, …) to paste + adapt
 scripts/
   spec-sync-nudge.mjs             → CI nudge: warn when behavior changes without a docs/spec/ update
 .github/workflows/

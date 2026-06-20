@@ -116,7 +116,9 @@ The guards are the most valuable, most copy-pasted asset. Promote them from per-
 a documented catalog (scope, authz, server-only, money, public-boundary, action-result) the
 bootstrap composes from. Medium effort.
 
-## v2-6. Formalize the audit mode — TODO
-The "audit an existing repo against the baseline" mode exists in `bootstrap-prompt.md` as a
-one-off prompt. Promote it to a real command/skill and run it periodically over shipped apps —
-that's the compliance telemetry the factory currently lacks. Small–medium effort.
+## v2-6. Formalize the audit mode ✅ DONE
+Done: the `/audit-app` slash command
+([`.claude/commands/audit-app.md`](./.claude/commands/audit-app.md)) audits an app against all
+standards, uses `.factory-version` to separate gaps from drift, and reports by ID with severity
++ the file that would change (`--fix` applies safe in-repo gaps). Run it periodically over
+shipped apps for compliance telemetry.
