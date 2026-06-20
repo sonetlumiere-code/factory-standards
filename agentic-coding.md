@@ -173,9 +173,10 @@ Concrete, high-leverage moves — roughly ordered by payoff:
    with the migration-presence check (schema changed but no new migration file — baseline
    DB-3).
 
-8. **An anti-patterns doc, fed by real mistakes.** Each time an agent makes a wrong-but-
-   plausible move, add it to `anti-patterns.md` with the right pattern. The corpus of
-   "things that look right but aren't" is gold for steering the next agent.
+8. **An anti-patterns doc, fed by real mistakes (shipped).** Each time an agent makes a
+   wrong-but-plausible move, add it to [anti-patterns.md](./anti-patterns.md) with the right
+   pattern. The corpus of "things that look right but aren't" is gold for steering the next
+   agent. (A per-project `docs/spec/anti-patterns.md` does the same at the app level.)
 
 9. **Adversarial / multi-agent review on risky changes.** For migrations, auth, money, and
    scope-isolation (tenant or ownership) work, run a second agent prompted to *refute* the change against the

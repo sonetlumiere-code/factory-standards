@@ -81,4 +81,42 @@ After any task, docs and tests must reflect the **real** code — no stale refer
 ## Suggested order
 
 2 (audit bias) → 1 (multi-stack) → 3 (interactive bootstrap, depends on 1+2) → 4 (SEO) → 5 (rule).
-Dogfood each against the LMS test app (`/bootstrap-app academia …`) as you go.
+Dogfood each against a real test app (`/bootstrap-app …`) as you go.
+
+---
+
+# Evolution v2 — from dogfooding the first real apps
+
+Came out of building two real apps and an honest review. The recurring theme: the
+**executable guards + the fold-back discipline** are the real value; **prose is the
+liability**. Invest in the first, prune the second.
+
+## v2-1. Version the paved road ✅ DONE
+A bootstrapped app should record which factory-standards version it was built against, so you
+can tell when it predates a standard. Done: semver scheme + scaffold writes `.factory-version`
+(`git describe`) + first tag. See [VERSIONING.md](./VERSIONING.md).
+
+## v2-2. `anti-patterns.md` — the dogfood corpus ✅ DONE
+The "wrong-but-plausible" moves agents make, fed by real bootstraps (referenced by
+`agentic-coding.md` #8, never created). Done: [anti-patterns.md](./anti-patterns.md).
+
+## v2-3. Close the semantic gap ✅ DONE
+Guards prove a rule's *shape* (filter present), not its *correctness* — a green build can ship
+a wrong access rule (caught a real one: a subscription that viewed unpublished content). Done:
+the scaffold now requires (a) an **integration test per critical invariant** and (b) an
+**adversarial review pass** (agentic-coding #9) before "done."
+
+## v2-4. Baseline per archetype — TODO
+The baseline is Next/Vercel-centric; Astro and Hono have a `stacks/*.md` but no equivalent
+baseline. Either generalize the baseline or add a per-stack one, so non-Next archetypes aren't
+second-class. Bigger effort — defer until a real Astro/Hono app needs it (don't outpace dogfooding).
+
+## v2-5. Reusable guard catalog — TODO
+The guards are the most valuable, most copy-pasted asset. Promote them from per-project copies to
+a documented catalog (scope, authz, server-only, money, public-boundary, action-result) the
+bootstrap composes from. Medium effort.
+
+## v2-6. Formalize the audit mode — TODO
+The "audit an existing repo against the baseline" mode exists in `bootstrap-prompt.md` as a
+one-off prompt. Promote it to a real command/skill and run it periodically over shipped apps —
+that's the compliance telemetry the factory currently lacks. Small–medium effort.

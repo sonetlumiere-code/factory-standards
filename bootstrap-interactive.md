@@ -172,7 +172,10 @@ decisions above:
    `pnpm create astro@latest <name>` (static site), or `pnpm create hono@latest <name>`
    (API). This keeps the base structure and versions current with the framework; then pin
    exact versions and apply the steps below. Set the primary locale (Q1b) in the framework's
-   i18n config as part of this step.
+   i18n config as part of this step. Then **record the standards version** — write
+   `.factory-version` at the app root from
+   `git -C <factory-standards> describe --tags --always` + the date (see
+   [VERSIONING.md](./VERSIONING.md)).
 1. **Tooling** — exactly per [tooling-config.md](./tooling-config.md): Prettier, ESLint
    flat config with the `process.env` guard, `tsconfig` strict + `noUncheckedIndexedAccess`,
    `.editorconfig`, standard scripts, engine + `packageManager` pins, `.nvmrc`.
@@ -185,10 +188,19 @@ decisions above:
    the deferral table: each MUST/SHOULD not done yet, with a one-line reason
    (deferred / not-applicable-for-this-archetype / needs-a-decision).
 4. **Recipes & optional docs** — pull in only what the answers selected (outbox, SEO, …).
+5. **Verify the rules actually hold (not just that guards are green).** Static guards prove a
+   rule's *shape*, not its *correctness* ([anti-patterns.md](./anti-patterns.md) AP-1). So:
+   - For **every critical invariant** (access resolution, authorization, money), write an
+     **integration test** (testcontainers) asserting the **negative** case — user B can't
+     reach user A's / unpublished / unpaid data — across *every* branch of the rule.
+   - Run an **adversarial review pass** ([agentic-coding.md](./agentic-coding.md) #9): a second
+     agent prompted to *refute* the access/authz/money invariants against the code before
+     declaring done.
 
-Acceptance criteria are the same as in [bootstrap-prompt.md](./bootstrap-prompt.md):
-tooling matches, guards green with real citations, a deferral table exists, and at least
-one project-specific architecture guard is authored.
+Acceptance criteria (superset of [bootstrap-prompt.md](./bootstrap-prompt.md)):
+tooling matches, guards green with real citations, a deferral table names every un-applied
+MUST/SHOULD, at least one project-specific architecture guard is authored, **an integration
+test exists for each critical invariant**, and the **adversarial review pass** ran clean.
 
 ---
 

@@ -98,9 +98,9 @@ The prompt above is the MVP. To make it one keystroke:
 - **A `degit`-able template.** Keep `skeleton/` copy-paste-able (it already is); a
   `degit your-org/factory-standards/skeleton my-app/` gets the docs + guards in one command,
   then the agent fills them in.
-- **Pin the standards version.** Have the bootstrapped project record which
-  factory-standards commit/tag it was built against, so you can tell when a project predates
-  a standard you later added.
+- **Pin the standards version (shipped).** The bootstrap writes `.factory-version` in the new
+  app (from `git describe --tags --always` + date), so you can tell when a project predates a
+  standard you later added. Scheme + how to read the gap: [VERSIONING.md](./VERSIONING.md).
 
 ## Keeping the standards alive (so this stays worth running)
 

@@ -37,8 +37,10 @@ Then, after I confirm:
 
 3. **SCAFFOLD BASE** — create the project with the framework's official CLI first
    (`pnpm create next-app@latest` / `create astro` / `create hono`), then layer the
-   standards on top. Don't hand-write the base tree; set the primary locale here.
-   Then, **TOOLING** — scaffold exactly per `tooling-config.md`: Prettier, ESLint flat
+   standards on top. Don't hand-write the base tree; set the primary locale here. Write
+   `.factory-version` (from `git -C <FACTORY_STANDARDS_PATH> describe --tags --always` +
+   date — see `VERSIONING.md`). Then, **TOOLING** — scaffold exactly per `tooling-config.md`:
+   Prettier, ESLint flat
    config with the `process.env` guard (+ others that apply), `tsconfig` strict +
    `noUncheckedIndexedAccess`, `.editorconfig`, the standard scripts, engine +
    `packageManager` pins, `.nvmrc`.
