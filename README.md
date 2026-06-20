@@ -14,12 +14,14 @@ at the relevant file(s) and tell it to treat them as binding defaults.
 
 | Doc | Status | Covers |
 | --- | --- | --- |
-| [stack.md](./stack.md) | ✅ ready | The canonical stack — the default library for every need, with version floors and rationale |
-| [bootstrap-prompt.md](./bootstrap-prompt.md) | ✅ ready | The invocation: a copy-paste prompt (+ skill notes) to scaffold a new app from these standards, with acceptance criteria |
+| [stacks/](./stacks/) | ✅ ready | The canonical stacks, **keyed by archetype** — a shared spine (language, validation, tooling, data) plus per-archetype files for static-site (Astro), full-stack web (Next.js), and API service (Hono). Start at [stacks/README.md](./stacks/README.md) |
+| [bootstrap-interactive.md](./bootstrap-interactive.md) | ✅ ready | **The primary invocation** — an adaptive questionnaire (archetype, tenancy, auth, payments, SEO, background) that maps answers → pre-set factory decisions, prints a decision sheet, then scaffolds |
+| [bootstrap-prompt.md](./bootstrap-prompt.md) | ✅ ready | Fallback invocation: a static copy-paste prompt (+ skill notes) for when every choice is already known, with acceptance criteria |
 | [vercel-nextjs-production-baseline.md](./vercel-nextjs-production-baseline.md) | ✅ ready | Production checklist for any Next.js app deployed to Vercel — env, DB (incl. Neon pooled-vs-direct), security, observability, reliability, CI/CD, Vercel specifics |
 | [tooling-config.md](./tooling-config.md) | ✅ ready | Exact Prettier / ESLint (flat + custom guards) / TypeScript / EditorConfig / scripts configs to start every project with |
+| [seo.md](./seo.md) | ✅ ready | Conditional SEO guide (public pages only): metadata + OG, robots/sitemap + the DB-at-build `force-dynamic` gotcha, JSON-LD, canonical, hreflang. Next.js + Astro |
 | [agentic-coding.md](./agentic-coding.md) | ✅ ready | Docs-as-executable-guardrails: how to structure a codebase so an AI agent stays correct and can't drift — plus ideas to improve agentic coding |
-| [skeleton/](./skeleton/) | ✅ ready | Copy-paste starter for the agentic-docs system: agent door, `docs/spec/` layout + sample, and the guard tests (citation, catalog-integrity, tenant-isolation/authz) — verified green |
+| [skeleton/](./skeleton/) | ✅ ready | Copy-paste starter for the agentic-docs system: agent door, `docs/spec/` layout + sample, and the guard tests (citation, catalog-integrity, scope-isolation [tenant or ownership]/authz) — verified green |
 | [recipes/](./recipes/) | ✅ ready | Opt-in patterns to pull in when an app needs them (not in the core skeleton). First recipe: a drop-in transactional outbox (schema + dispatcher + cron + test) |
 
 ## Documents to add next (your knowledge base roadmap)

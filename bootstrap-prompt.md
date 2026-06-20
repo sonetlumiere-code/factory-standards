@@ -1,8 +1,12 @@
-# Bootstrap Prompt
+# Bootstrap Prompt (static fallback)
 
 The invocation mechanism. The standards are inert until an agent reads them — this
 is the one command that loads them. Copy the prompt, fill the two placeholders,
 paste into a fresh session started from a directory that can read this repo.
+
+> **Prefer [bootstrap-interactive.md](./bootstrap-interactive.md).** That flow asks an
+> adaptive questionnaire and maps your answers to pre-set decisions. Use this static
+> prompt when you already know every choice and want a single paste.
 
 ---
 
@@ -24,17 +28,20 @@ Start the fresh session from the directory where `{{APP}}` should be created (e.
 ## The prompt
 
 ```
-Bootstrap a new Next.js app at ./{{APP}} — <one paragraph: what it does, the core
-domain entity, and the 2–3 flows that matter>.
+Bootstrap a new app at ./{{APP}} — <one paragraph: what it does, the core
+domain entity, and the 2–3 flows that matter>. <Name the archetype if you know it:
+static-site / full-stack web / API service; otherwise let step 2 pick it>.
 
 Treat /{{PATH}}/factory-standards/ as binding defaults. Before writing code:
 
-1. READ every file in /{{PATH}}/factory-standards/ (README, stack.md,
+1. READ every file in /{{PATH}}/factory-standards/ (README, stacks/,
    tooling-config.md, vercel-nextjs-production-baseline.md, agentic-coding.md,
    and skeleton/).
 
-2. STACK — use stack.md's canonical choices. Don't substitute libraries; if a need
-   isn't covered, say so and propose one rather than guessing.
+2. STACK — pick the **archetype** first (static-site / full-stack web / API service)
+   from stacks/README.md, then use that archetype file's canonical choices plus the
+   shared spine. Don't substitute libraries; if a need isn't covered, say so and
+   propose one rather than guessing.
 
 3. TOOLING — scaffold exactly per tooling-config.md: Prettier, ESLint flat config
    with the process.env guard (+ any others that apply), tsconfig strict +
@@ -51,7 +58,7 @@ Treat /{{PATH}}/factory-standards/ as binding defaults. Before writing code:
    one-line reason (deferred / not-applicable / needs-a-decision).
 
 6. MUSCLES — author at least one project-specific architecture guard beyond the
-   skeleton's citation/catalog tests (e.g. the tenant-isolation or authz guard from
+   skeleton's citation/catalog tests (e.g. the scope-isolation [tenant or ownership] or authz guard from
    skeleton/tests/architecture/, adapted to this app's data layer and auth).
 
 Scope discipline: match effort to the app. Don't gold-plate a small project — apply

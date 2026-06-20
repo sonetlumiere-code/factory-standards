@@ -4,21 +4,29 @@ Backlog for the next work session. Goal: make factory-standards **maximally flex
 — a bootstrap base for *any* app type the software factory builds, not just
 multi-tenant Next.js apps.
 
-## 1. Multi-stack by app type
+## 1. Multi-stack by app type ✅ DONE
 
-`stack.md` currently assumes one stack (Next.js full-stack). Make it **stack-per-archetype**:
+`stack.md` assumed one stack (Next.js full-stack). Now **stack-per-archetype** under
+`stacks/`:
 
-- **Static site / landing** → **Astro** (default).
-- **Full-stack web app** → the current stack (Next.js / Neon / Drizzle / Better Auth / Tailwind).
-- **API-only / backend service** → define one (e.g. Hono or Next route handlers + Drizzle, no UI).
+- **Static site / landing** → **Astro** (default). `stacks/static-site.md`.
+- **Full-stack web app** → Next.js / Neon / Drizzle / Better Auth / Tailwind. `stacks/full-stack-web.md`.
+- **API-only / backend service** → **Hono** + Drizzle/Neon, no UI. `stacks/api-service.md`.
 - (later) mobile, CLI, etc.
 
-Restructure: either one `stack.md` with a section per archetype, or `stacks/<archetype>.md`.
-The bootstrap picks the stack from the chosen archetype.
+Resolved to `stacks/<archetype>.md` (over one sectioned file), with `stacks/README.md`
+as the chooser + shared spine (universal core + data spine). `stack.md` removed; the
+bootstrap prompt + slash command now pick the archetype first.
 
-## 2. Audit + remove the multi-tenant bias
+## 2. Audit + remove the multi-tenant bias ✅ DONE
 
-Verify the repo isn't over-oriented to multi-tenant apps. Review:
+Done: the architecture guard now ships **two blocks** — tenant-isolation **and**
+ownership-isolation (single-tenant: a user reads only their own rows), each inert
+until its tokens appear. Teaching examples (CLAUDE.md Rule 1 → "Scope isolation",
+INV-1) and the baseline/cross-refs reframed to "scope (tenant or ownership)", showing
+both variants. Single-tenant / single-admin is now a first-class case.
+
+Original notes — verify the repo isn't over-oriented to multi-tenant apps. Review:
 
 - The baseline (DB-5 "tenant filter", etc.), the skeleton `CLAUDE.md` example rules, and
   especially the **tenant-isolation guard** in `skeleton/tests/architecture/`.
@@ -27,10 +35,17 @@ Verify the repo isn't over-oriented to multi-tenant apps. Review:
   The guard template should support both modes (configurable), not assume `tenantId`.
 - Generally: anywhere "tenant" is assumed, make it conditional on the app's answers.
 
-## 3. Interactive bootstrap (questionnaire → pre-set decisions)
+## 3. Interactive bootstrap (questionnaire → pre-set decisions) ✅ DONE
 
-Replace/extend the fixed `bootstrap-prompt.md` so the agent **asks questions first** and
-maps answers → pre-established factory decisions. Questions like:
+Done: [bootstrap-interactive.md](./bootstrap-interactive.md) is the primary invocation —
+an **adaptive** questionnaire (each "no" prunes a branch) that maps answers → pre-set
+factory decisions (archetype→stack #1, tenancy→guard #2, payments→outbox/webhooks,
+SEO→#4, background→outbox/cron), prints a decision sheet, and stops for confirmation
+before scaffolding. The slash command runs it; `bootstrap-prompt.md` is the static
+fallback.
+
+Original notes — replace/extend the fixed `bootstrap-prompt.md` so the agent **asks
+questions first** and maps answers → pre-established factory decisions. Questions like:
 
 - App type / archetype (→ picks the stack, #1).
 - Tenancy: single-admin / single-tenant / multi-tenant (→ which guards, #2).
@@ -40,24 +55,28 @@ maps answers → pre-established factory decisions. Questions like:
 Each answer flips pre-set choices (the way the AskUserQuestion flow worked in the design
 session). This becomes the real invocation; the static prompt stays as a fallback.
 
-## 4. SEO guide (conditional)
+## 4. SEO guide (conditional) ✅ DONE
 
-New doc `seo.md`: metadata + Open Graph, `robots.ts` + `sitemap.ts` (and the
-DB-at-build gotcha → `force-dynamic`), structured data (JSON-LD), canonical URLs,
-Core Web Vitals budget, hreflang/i18n. **Applies to web/apps with public pages; NOT to
-API-only projects** — the interactive bootstrap (#3) decides whether to include it.
+Done: [seo.md](./seo.md) — metadata + Open Graph, `robots.ts`/`sitemap.ts` (incl. the
+DB-at-build gotcha → `force-dynamic`), JSON-LD, canonical URLs, hreflang/i18n, plus a
+ready-to-index checklist. Covers both Next.js and Astro; Core Web Vitals hands off to
+OBS-3 / `performance-budgets.md` rather than duplicating. Linked from baseline NEXT-3,
+both public-page stacks, and the interactive bootstrap (Q5 decides inclusion; N/A for
+API-only).
 
-## 5. Make "docs + tests follow code" an explicit first-class rule
+## 5. Make "docs + tests follow code" an explicit first-class rule ✅ DONE
 
-After any task, docs and tests must reflect the **real** code — no stale references. This
-already exists in spirit (`agentic-coding.md` idea #7; gp-learning's precedence + citation
-tests + spec-sync CI). Elevate it:
+After any task, docs and tests must reflect the **real** code — no stale references.
 
-- ✅ Prominent rule added to the skeleton `CLAUDE.md` (a ⚠️ callout under the precedence
-  block + the "after making changes" checklist).
-- TODO: optionally its own short doc, and wire the spec-sync CI nudge (warn when
-  `actions/`/`drizzle/schema/` change without `docs/spec/`) as active enforcement.
-- Reference: gp-learning's `docs/spec/README.md` precedence section + `tests/spec/citations.test.ts`.
+- ✅ Prominent rule in the skeleton `CLAUDE.md` (a ⚠️ callout under the precedence block +
+  the "after making changes" checklist).
+- ✅ Active enforcement: the **spec-sync CI nudge** —
+  [skeleton/scripts/spec-sync-nudge.mjs](./skeleton/scripts/spec-sync-nudge.mjs) +
+  example [workflow](./skeleton/.github/workflows/spec-sync.yml) — warns when behavior
+  files (`actions/`, `data/`, `drizzle/schema/`) change without a `docs/spec/` update.
+  Warn-only by default; `--strict` to block. `agentic-coding.md` idea #7 updated to shipped.
+- Not done (deliberately): a separate dedicated doc — the rule lives where it's enforced
+  (CLAUDE.md + the nudge), so a standalone doc would just be one more thing to keep in sync.
 
 ## Suggested order
 

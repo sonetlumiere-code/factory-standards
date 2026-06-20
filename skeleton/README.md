@@ -20,7 +20,11 @@ tests/spec/
   catalog-integrity.test.ts     → stable IDs are append-only (locked snapshot)
   snapshots/catalog-ids.json    → the locked ID list (one append per new ID)
 tests/architecture/
-  architecture-invariants.test.ts → tenant-isolation + authz guards (Pattern B)
+  architecture-invariants.test.ts → scope-isolation (tenant or ownership) + authz guards (Pattern B)
+scripts/
+  spec-sync-nudge.mjs             → CI nudge: warn when behavior changes without a docs/spec/ update
+.github/workflows/
+  spec-sync.yml                   → example wiring for the nudge (warn-only; adapt to your CI)
 ```
 
 ## How to use it
@@ -32,11 +36,17 @@ tests/architecture/
 3. Wire the guards into your test runner so they run in CI (they need no DB —
    pure file checks). With Vitest: include `tests/**/*.test.ts` in the unit project.
    The architecture guards (`tests/architecture/`) are inert until you add a `data/`
-   layer and action files — adapt their tenant-id token and permission-check matcher
-   to your app.
+   layer and action files. Keep the scope-isolation block that fits — tenant-id (multi-
+   tenant) or owner-id (single-tenant) — and adapt its token and the permission-check
+   matcher to your app.
 4. Adopt the rule: **docs follow code in the same change.** When you touch cited
    code, update the statement and its citation; when you add a stable ID, append it
    to both the catalog file and `snapshots/catalog-ids.json`.
+5. Wire the **spec-sync nudge** in CI: run `scripts/spec-sync-nudge.mjs` on every PR
+   (see `.github/workflows/spec-sync.yml`). It warns when behavior files (`actions/`,
+   `data/`, `drizzle/schema/`) change without a `docs/spec/` update. Warn-only by
+   default; add `--strict` to make it a hard gate once the habit sticks. Adapt the
+   `BEHAVIOR`/`SPEC_DIR` globs at the top of the script to your layout.
 
 ## The ID scheme (append-only, never renumber)
 

@@ -16,16 +16,21 @@ live in `docs/spec/`; this file is the index and the non-negotiables.
 ## What this is
 
 <One paragraph: what the product is, the stack, and the single most important
-domain concept. E.g. "Multi-tenant LMS. Next.js 16 / React 19 / TS strict /
-Postgres (Neon) / Drizzle / Better Auth / Tailwind. Org = tenant; the storeId
-filter IS the security boundary.">
+domain concept — including how rows are *scoped* (the security boundary). Stack
+e.g. "Next.js 16 / React 19 / TS strict / Postgres (Neon) / Drizzle / Better Auth
+/ Tailwind." Then state the scope, picking the variant that fits:
+- multi-tenant — "Org = tenant; the tenant-id filter IS the security boundary."
+- single-tenant / single-admin — "Each user owns their rows; the owner-id filter
+  IS the security boundary." (no tenant concept)>
 
 ## Rules every change must respect
 
 <5–7 max. Each links to its full entry by stable ID. Examples — replace with yours:>
 
-1. **Tenant isolation.** Every `data/*` query filters by the tenant id. There is no
-   row-level security; the filter IS the boundary. ([INV-1](./docs/spec/invariants.md))
+1. **Scope isolation.** Every `data/*` query filters by its scope id — the **tenant
+   id** (multi-tenant) or the **owner id** (single-tenant: a user reads only their own
+   rows). There is no row-level security; the filter IS the boundary.
+   ([INV-1](./docs/spec/invariants.md))
 2. **Validated env only.** Never read `process.env` outside `lib/env/*` (NODE_ENV
    excepted). Import typed `env`. ([C-6](./docs/spec/constraints.md))
 3. **Server actions return a typed result** via `ok()`/`fail()` — never raw
@@ -44,8 +49,10 @@ Static guards fail the build on violations — see `tests/spec/` and the lint co
    `tests/spec/snapshots/catalog-ids.json`.
 3. `grep -rn '<symbol>' docs/` before declaring done — fix any stale citation you renamed.
 4. Add a test for any new pure helper; an integration test for invariants the static
-   guards can't reach (transactions, races, cross-tenant).
-5. Run `pnpm lint && pnpm typecheck && pnpm test`.
+   guards can't reach (transactions, races, cross-scope — cross-tenant or cross-owner).
+5. Run `pnpm lint && pnpm typecheck && pnpm test`. (CI also runs the **spec-sync nudge**
+   — `scripts/spec-sync-nudge.mjs` — which warns if you changed behavior without touching
+   `docs/spec/`. Heed it: update the spec rather than silencing it.)
 
 ## Key paths
 

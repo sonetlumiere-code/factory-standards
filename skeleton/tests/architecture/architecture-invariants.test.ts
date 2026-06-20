@@ -8,10 +8,20 @@ import { describe, expect, it } from "vitest"
  * Unlike the citation/catalog guards (which prove docs *reference* real code),
  * these prove a rule is actually *held* in code, failing the build on a violation.
  *
- * Two guards ship here as working templates. **Adapt the tokens/globs to your app**
- * (your tenant-id column name, your permission-check call, your mutation dirs).
- * Both are inert until the relevant directories exist, so a freshly-scaffolded
+ * Three guards ship here as working templates. **Adapt the tokens/globs to your app**
+ * (your scope-id column name, your permission-check call, your mutation dirs).
+ * All are inert until the relevant directories exist, so a freshly-scaffolded
  * project stays green and the guards activate as you add the data/action layers.
+ *
+ * SCOPE ISOLATION comes in two modes — keep the one that matches your app, delete
+ * the other. They are mutually-exclusive framings of the same rule ("a data-layer
+ * function that accepts a scope id MUST filter by it"), and each is inert until its
+ * tokens appear, so leaving both in place is harmless on a fresh scaffold:
+ *   - Guard 1a — TENANT isolation (multi-tenant apps): rows belong to an org/store;
+ *     the tenant-id filter is the security boundary between tenants.
+ *   - Guard 1b — OWNERSHIP isolation (single-tenant / single-admin apps): there is
+ *     no tenant, so the boundary is per-user — a user reads only their own rows.
+ * The interactive bootstrap picks the mode; if you scaffold by hand, pick one here.
  */
 
 const ROOT = process.cwd()
@@ -55,10 +65,11 @@ function parseExportedFunctions(src: string): Fn[] {
   return out
 }
 
-// ── Guard 1: tenant isolation ───────────────────────────────────────────────
+// ── Guard 1a: tenant isolation (multi-tenant apps) ──────────────────────────
 // Every data-layer function that ACCEPTS a tenant id must USE it in its body.
 // A function that takes `storeId` but never references it is a cross-tenant leak:
 // the filter is the security boundary, so a missing filter is a vulnerability.
+// Delete this block if your app is single-tenant — use Guard 1b instead.
 const TENANT_ID = /\b(storeId|orgId|organizationId|tenantId)\b/
 
 describe("tenant isolation (data layer)", () => {
@@ -80,6 +91,44 @@ describe("tenant isolation (data layer)", () => {
           `${fn.name}() in ${file} accepts a tenant id but never references it ` +
             `in its body. A data-layer function that takes a tenant id MUST scope ` +
             `its query by it — a missing filter is a cross-tenant leak.`
+        ).toBe(true)
+      })
+    }
+  }
+})
+
+// ── Guard 1b: ownership isolation (single-tenant / single-admin apps) ────────
+// The single-tenant counterpart of Guard 1a: with no tenant, the boundary is the
+// owner. Every data-layer function that ACCEPTS an owner id must USE it in its
+// body — a function that takes `userId` but never references it lets one user read
+// another's rows (a cross-owner leak). Delete this block if your app is multi-tenant.
+//
+// NOTE: `userId` is broad — a function may legitimately take it for a non-scoping
+// reason (e.g. `createUser(... userId)` writing an audit column). Trim OWNER_ID to
+// the column names that actually scope ownership in YOUR data layer, the same way
+// you'd adapt TENANT_ID above.
+const OWNER_ID = /\b(userId|ownerId|accountId|customerId)\b/
+
+describe("ownership isolation (data layer)", () => {
+  const files = walkTs("data")
+
+  if (files.length === 0) {
+    it("no data/ layer yet — guard activates once you add one", () => {
+      expect(files.length).toBe(0)
+    })
+  }
+
+  for (const file of files) {
+    const fns = parseExportedFunctions(fs.readFileSync(path.join(ROOT, file), "utf8"))
+    for (const fn of fns) {
+      if (!OWNER_ID.test(fn.params)) continue
+      it(`${file} → ${fn.name}() uses its owner id`, () => {
+        expect(
+          OWNER_ID.test(fn.body),
+          `${fn.name}() in ${file} accepts an owner id but never references it ` +
+            `in its body. A data-layer function that takes an owner id MUST scope ` +
+            `its query by it — a missing filter is a cross-owner leak (one user ` +
+            `reading another's rows).`
         ).toBe(true)
       })
     }

@@ -11,15 +11,23 @@ a **confidence level**, an **evidence citation**, and its **enforcement mechanis
 
 ---
 
-### INV-1 — Tenant isolation: every data-layer query filters by tenant id
+### INV-1 — Scope isolation: every data-layer query filters by its scope id
 
 **Confidence:** PROVEN · **Enforced:** static guard (`tests/spec/...`) + convention
 **Evidence:** `` `data/<feature>.ts` › `getThings` ``
 
 There is no database row-level security. Every read and write in the data layer scopes by
-the tenant id (`storeId`/`orgId`); the filter **is** the security boundary. A data-layer
-function that takes a tenant id but doesn't use it in its `WHERE` is a cross-tenant leak —
-caught by the architecture guard. Pairs with [INV-2](#inv-2--public-row-boundary-for-client-bound-data).
+its **scope id**; the filter **is** the security boundary. The scope id is one of two,
+depending on the app — keep the variant that fits:
+
+- **Multi-tenant** — the tenant id (`storeId`/`orgId`). A data-layer function that takes a
+  tenant id but doesn't use it in its `WHERE` is a **cross-tenant** leak.
+- **Single-tenant / single-admin** — the owner id (`userId`/`ownerId`). A function that
+  takes an owner id but doesn't use it is a **cross-owner** leak (one user reading
+  another's rows).
+
+Either way the missing filter is caught by the architecture guard. Pairs with
+[INV-2](#inv-2--public-row-boundary-for-client-bound-data).
 
 ### INV-2 — Public-row boundary for client-bound data
 

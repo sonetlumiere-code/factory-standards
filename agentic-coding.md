@@ -28,7 +28,7 @@ tests/spec/citation-lib.ts      citation-resolution machinery
 tests/spec/citations.test.ts    every `path › symbol` resolves to real code
 tests/spec/catalog-integrity.test.ts  stable IDs are append-only (locked snapshot)
 tests/spec/snapshots/catalog-ids.json
-tests/architecture/architecture-invariants.test.ts  tenant-isolation + authz guards
+tests/architecture/architecture-invariants.test.ts  scope-isolation (tenant or ownership) + authz guards
 ```
 
 Copy it, replace the `<placeholders>`, wire `tests/**` into your test runner, and
@@ -71,7 +71,7 @@ Make the rules addressable and *prove they're held*:
   per-change checklist indexed by what you're modifying.
 - A **`risk-register.md`** ("if you change X, Y breaks") and **`anti-patterns.md`** (common
   agent mistakes, pre-empted).
-- **Architecture-invariant guards**: tenant-isolation, RBAC, action-result shape — failing
+- **Architecture-invariant guards**: scope-isolation (tenant or ownership), RBAC, action-result shape — failing
   the build on a violation, not just a doc cite.
 - **Link-integrity** tests that fail when a doc references a path or anchor that no longer exists.
 
@@ -118,8 +118,8 @@ This is what makes docs *executable*. At minimum:
 - **Citation integrity** — every `` `path` › `symbol` `` cite resolves to real code.
 - **Catalog integrity** — IDs are append-only (a locked snapshot catches a renumber/delete).
 - **Link integrity** — every doc path/anchor reference exists.
-- **Architecture invariants** — the rules that *can* be statically checked (tenant filter
-  present, RBAC gate present, return-type shape) are, and fail the build otherwise.
+- **Architecture invariants** — the rules that *can* be statically checked (scope filter
+  present — tenant or owner, RBAC gate present, return-type shape) are, and fail the build otherwise.
 - **Generated-artifact staleness** — `spec.json` / `schema.generated.md` match their source.
 
 > **What citation tests prove — and don't.** They are *referential-integrity* checks: the
@@ -166,16 +166,19 @@ Concrete, high-leverage moves — roughly ordered by payoff:
    the spec index — generate them from code and guard their freshness. Hand-maintained
    mirrors of code always rot; generated ones can't.
 
-7. **A "docs follow code in the same change" gate.** A CI nudge (warn, or block) when
-   behavior files (`actions/`, `drizzle/schema/`) change without a matching `docs/spec/`
-   update — and a migration-presence check (schema changed but no new migration file).
+7. **A "docs follow code in the same change" gate (shipped).** A CI nudge that warns
+   when behavior files (`actions/`, `data/`, `drizzle/schema/`) change without a matching
+   `docs/spec/` update — `skeleton/scripts/spec-sync-nudge.mjs` (+ the example
+   `.github/workflows/spec-sync.yml`), warn-only by default, `--strict` to block. Pair it
+   with the migration-presence check (schema changed but no new migration file — baseline
+   DB-3).
 
 8. **An anti-patterns doc, fed by real mistakes.** Each time an agent makes a wrong-but-
    plausible move, add it to `anti-patterns.md` with the right pattern. The corpus of
    "things that look right but aren't" is gold for steering the next agent.
 
 9. **Adversarial / multi-agent review on risky changes.** For migrations, auth, money, and
-   tenant-isolation work, run a second agent prompted to *refute* the change against the
+   scope-isolation (tenant or ownership) work, run a second agent prompted to *refute* the change against the
    invariants before merge. Cheap insurance on the high-blast-radius areas.
 
 10. **Golden-path reference implementations.** For every "add a new X" (provider, plan,

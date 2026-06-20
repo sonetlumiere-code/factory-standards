@@ -73,11 +73,11 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
   credentials. Dev creds must not be able to touch the prod database. (Neon: two roles /
   branches.)
 - **DB-5 (MUST)** All DB access through a data layer (`data/*`, `import "server-only"`);
-  components/pages never import the ORM directly. Tenant/authz filters live there and are
-  the security boundary.
+  components/pages never import the ORM directly. Scope filters — tenant id (multi-tenant)
+  or owner id (single-tenant) — and authz filters live there and are the security boundary.
 - **DB-6 (SHOULD)** Backups / point-in-time recovery enabled; restore tested at least once.
-- **DB-7 (SHOULD)** Index the columns every tenant-scoped read filters on (e.g. a composite
-  `(tenant_id, created_at)` index behind a list view).
+- **DB-7 (SHOULD)** Index the columns every scope-bound read filters on (e.g. a composite
+  `(tenant_id, created_at)` or `(owner_id, created_at)` index behind a list view).
 
 ## 4. Security
 
@@ -108,8 +108,8 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
 - **SEC-7 (MUST)** Webhooks: verify the provider signature **before** parsing the body,
   and dedupe deliveries with an idempotency table (`UNIQUE(provider, external_id)` +
   `ON CONFLICT DO NOTHING`). _Pattern:_ `app/api/webhooks/<provider>/route.ts`.
-- **SEC-8 (SHOULD)** Encrypt third-party secrets at rest (payment tokens, API keys stored
-  per-tenant) — app-level AES-GCM or DB column encryption.
+- **SEC-8 (SHOULD)** Encrypt third-party secrets at rest (payment tokens, per-tenant or
+  per-user API keys) — app-level AES-GCM or DB column encryption.
 - **SEC-9 (SHOULD)** Dependency scanning: Dependabot or Renovate + `pnpm audit` (or
   Snyk/Socket) gated in CI. Patch known CVEs on a cadence. Tip: `pnpm audit --prod` focuses
   on what actually ships; start it non-blocking if you have a transitive backlog, then make
@@ -173,7 +173,9 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
   `app/not-found.tsx`.
 - **NEXT-2 (SHOULD)** `loading.tsx` / Suspense boundaries on slow segments for streaming UX.
 - **NEXT-3 (MUST)** SEO surface: `app/robots.ts`, `app/sitemap.ts` (or per-segment
-  sitemaps), `metadata` exports, Open Graph.
+  sitemaps), `metadata` exports, Open Graph. Implementation patterns (incl. the
+  DB-at-build `force-dynamic` gotcha, JSON-LD, canonical, hreflang): [seo.md](./seo.md).
+  Applies to public pages only — N/A for API-only services.
 - **NEXT-4 (MUST)** Respect the server/client boundary: `import "server-only"` on data and
   secret-bearing modules; client-bound code uses public/safe view types, never raw DB
   rows. Enforce with a guard test.
@@ -200,10 +202,12 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
 - **TEST-1 (MUST)** Unit tests for pure helpers (money math, backoff, label builders).
   _Pattern:_ `lib/**/*.test.ts`.
 - **TEST-2 (SHOULD)** Integration tests against a real Postgres (testcontainers) for
-  transactions, races, and cross-tenant scenarios the type system can't reach. _Pattern:_
+  transactions, races, and cross-scope (cross-tenant / cross-owner) scenarios the type
+  system can't reach. _Pattern:_
   `tests/integration/*`.
 - **TEST-3 (SHOULD)** Architecture/guard tests that fail the build when an invariant is
-  violated (tenant isolation, RBAC, action-result shape, doc/link integrity). See
+  violated (scope isolation — tenant or ownership, RBAC, action-result shape, doc/link
+  integrity). See
   [agentic-coding.md](./agentic-coding.md).
 - **TEST-4 (MAY)** E2E (Playwright) on the critical happy paths (signup, checkout/enroll).
 

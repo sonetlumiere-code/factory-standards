@@ -20,6 +20,8 @@ import {
  * System-scoped, not tenant-scoped: rows carry their tenant id in the JSON payload
  * (so a consumer re-reads tenant-isolated state via the data layer), but the table
  * has no tenant column — the dispatcher is a platform process draining every tenant.
+ * (Single-tenant app? There's no tenant id to carry — the consumer re-reads
+ * owner-scoped state instead; the system-scoped dispatcher note still holds.)
  *
  * `eventType` is the typed catalog key (`lib/events/catalog.ts`); it carries no DB
  * CHECK on purpose — the catalog grows in TypeScript, and a CHECK would force a

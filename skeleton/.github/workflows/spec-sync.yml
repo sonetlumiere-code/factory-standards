@@ -1,0 +1,25 @@
+# Example CI wiring for the spec-sync nudge (agentic-coding.md idea #7).
+# Warns on a PR when behavior files changed without a docs/spec/ update — never blocks
+# (the script exits 0 by default). Flip to a hard gate by adding `--strict` once your
+# team is in the habit. Adapt to your CI provider if you're not on GitHub Actions.
+name: spec-sync
+
+on:
+  pull_request:
+
+jobs:
+  spec-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need history to diff against the base branch
+      - run: git fetch origin ${{ github.base_ref }}:refs/remotes/origin/main --depth=1 || true
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: spec-sync nudge
+        env:
+          SPEC_SYNC_BASE: ${{ github.event.pull_request.base.sha }}
+          SPEC_SYNC_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/spec-sync-nudge.mjs

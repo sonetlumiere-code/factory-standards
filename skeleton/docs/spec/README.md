@@ -23,7 +23,7 @@
 | [domain-model.md](./domain-model.md) | Entities, relationships, ownership, deletion |
 | [business-rules.md](./business-rules.md) | Enforced & unenforced rules (`BR-*`) |
 | [invariants.md](./invariants.md) | Always-true conditions (`INV-*`) |
-| [constraints.md](./constraints.md) | DB / app / workflow / permission / tenant (`C-*`) |
+| [constraints.md](./constraints.md) | DB / app / workflow / permission / scope — tenant or ownership (`C-*`) |
 | [risk-register.md](./risk-register.md) | "If you change X, Y breaks" (`R-*`) |
 | [workflows.md](./workflows.md) | Canonical end-to-end flows |
 | [authorization-model.md](./authorization-model.md) | Roles, permissions, matrices |
