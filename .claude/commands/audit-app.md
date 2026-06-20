@@ -27,7 +27,13 @@ Treat `<FACTORY_STANDARDS_PATH>/` as the source of truth. Steps:
    - `agentic-coding.md` / `skeleton/` — agent door + `docs/spec/` present, citations resolve, the spec-sync nudge wired, ≥1 architecture guard, an integration test per critical invariant.
    - `tooling-config.md` — Prettier/ESLint/tsconfig strict/scripts/pins.
 
-4. **Report a table:** `ID | level (MUST/SHOULD/MAY) | status (ok | gap | N/A) | file that would change | note`. Flag rows that are **new since `.factory-version`** (drift) separately from genuine gaps. Sort gaps by level then severity.
+4. **Report a table:** `ID | level (MUST/SHOULD/MAY) | status (ok | gap | N/A | unknown) | file that would change | note`. Flag rows that are **new since `.factory-version`** (drift) separately from genuine gaps. Sort gaps by level then severity.
+
+   > **Verify before you call GAP.** Open the file/dir and confirm the thing is actually
+   > missing — don't infer absence from a directory listing or a guess. If you couldn't
+   > verify, mark **`unknown`**, never `gap`. A false GAP (claiming something's missing when
+   > it's there) is worse than a missed one: it sends the user to fix what already works.
+   > This is the same rule as the spec's "mark UNKNOWN, never invent."
 
 5. **Summarize:** counts (ok / gap / N-A), the top 3 MUST gaps, and whether the app is behind the current standards version.
 

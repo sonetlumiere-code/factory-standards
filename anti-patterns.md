@@ -58,4 +58,15 @@ custom surfaces, fail-open. See [security.md](./security.md).
 **Right pattern:** the deferral table names **every** un-applied MUST/SHOULD with a one-line
 reason (deferred / not-applicable / needs-a-decision). Silence is a smell.
 
+### AP-7 — Auditing by inference instead of inspection
+**Wrong:** an audit marks an item GAP because it wasn't seen in a directory listing or a quick
+scan — without opening the file to confirm.
+**Why it's plausible:** a fast pass over a big repo, and "absent" is the default assumption.
+**Reality:** false GAPs are worse than misses — they send someone to "fix" what already works.
+A real audit of art-lms wrongly flagged CLAUDE.md, `lib/validations/`, idempotency keys, and
+ownership indexes as missing; all four existed.
+**Right pattern:** open the file/dir and confirm before calling GAP; if you couldn't verify,
+mark **unknown**, never gap. Same rule as the spec's "mark UNKNOWN, never invent"
+([audit-app](./.claude/commands/audit-app.md)).
+
 <!-- Append new anti-patterns below as dogfooding surfaces them. -->
