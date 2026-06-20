@@ -82,9 +82,12 @@ change. Don't fix anything yet — just the gap report.
 
 The prompt above is the MVP. To make it one keystroke:
 
-- **Claude Code slash command / skill.** Put the prompt (with the `{{APP}}`/`{{PATH}}`
-  placeholders) in a project or user skill so `/bootstrap-app <name>` runs it. The skill
-  body is just "read factory-standards, then follow these steps."
+- **Claude Code slash command (shipped).** This repo includes
+  [`.claude/commands/bootstrap-app.md`](./.claude/commands/bootstrap-app.md) — a portable
+  template with `$ARGUMENTS`. Copy it to `~/.claude/commands/` (user-level, available in
+  every project), set the absolute factory-standards path, and run
+  `/bootstrap-app <app description>`. A slash command fits this better than a skill
+  because the content is just a parameterized prompt.
 - **A `degit`-able template.** Keep `skeleton/` copy-paste-able (it already is); a
   `degit your-org/factory-standards/skeleton my-app/` gets the docs + guards in one command,
   then the agent fills them in.
