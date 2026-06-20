@@ -81,7 +81,9 @@ here are the intent.
 - **Auth hardening (SEC-5):** httpOnly + Secure + SameSite cookies, CSRF protection,
   server-side session validation.
 - **Webhooks (SEC-7):** verify the provider signature **before** parsing the body; dedupe
-  with an idempotency table (`UNIQUE(provider, external_id)` + `ON CONFLICT DO NOTHING`).
+  with an idempotency table (`UNIQUE(provider, external_id)` + `ON CONFLICT DO NOTHING`). For
+  the canonical processor **MercadoPago**, validate the `x-signature` / `x-request-id` HMAC and
+  dedupe by payment id; **Stripe** uses `Stripe-Signature`.
 - **Encrypt third-party secrets at rest (SEC-8):** payment tokens, per-user/tenant API keys
   — app-level AES-GCM or DB column encryption. Rotate secrets (ENV-7).
 - **Dependency scanning (SEC-9):** Dependabot/Renovate + `pnpm audit` gated in CI.

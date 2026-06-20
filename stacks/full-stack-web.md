@@ -44,6 +44,7 @@ only what's specific to a full-stack web app.
 
 | Capability | Canonical choice | Why |
 | ---------- | ---------------- | --- |
+| Payments | **MercadoPago** (LATAM default); **Stripe** for international | MercadoPago is the dominant LATAM processor (AR/BR/MX). Put it behind a `PaymentProvider` interface so a fake provider can stand in for it in dev/tests. Verify the webhook signature (`x-signature`) before parsing + dedupe by payment id (SEC-7); store money in integer cents. See [security.md](../security.md). |
 | Transactional email | **Resend** | Simple API; wrap sends in the outbox so they can't be lost. |
 | Image storage / CDN | **Cloudinary** | Uploads + transforms; allowlist its host in `next.config` and CSP. |
 | Background work | **`@vercel/functions` `waitUntil`** | Survives the response on serverless; wrap transient ops in retry-with-backoff. |

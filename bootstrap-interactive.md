@@ -117,7 +117,7 @@ English silently** — it's the user's call and it shapes every string. Then ask
 | | Yes (API) | Hashed API keys or OAuth/JWT; verify on every route; authz guard activates. |
 | **Payments** | None | Nothing. |
 | | Simulated | Integer-cents money helpers (`toCents`/`fromCents`); a fake provider behind the same interface; no real webhooks. |
-| | Real gateway | Money in cents; **transactional outbox** ([recipes/transactional-outbox](./recipes/transactional-outbox/)); webhook signature verify + idempotency (SEC-7); secret encryption (SEC-8); rate-limit checkout (SEC-6). |
+| | Real gateway | **MercadoPago** (LATAM default) / **Stripe** (international) behind a `PaymentProvider` interface; money in cents; **transactional outbox** ([recipes/transactional-outbox](./recipes/transactional-outbox/)); webhook signature verify + idempotency (SEC-7); secret encryption (SEC-8); rate-limit checkout (SEC-6). |
 | **Email** | None | Nothing. |
 | | Yes | **Resend** wrapper in `lib/`. Wrap must-not-lose sends (receipts, account actions) in the outbox → may flip Background to must-not-lose. |
 | **Uploads** | None | Nothing. |
