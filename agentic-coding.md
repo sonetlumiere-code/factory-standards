@@ -13,6 +13,27 @@ them honest.
 Both reference projects implement versions of this. They're complementary, and
 this doc is the **synthesis of the best of each** — adopt all of it on new projects.
 
+## Start here — copy the skeleton
+
+Don't re-derive this per project. [`skeleton/`](./skeleton/) is the copy-paste
+starting point — the canonical structure below, already wired and **verified
+green**:
+
+```
+CLAUDE.md                       agent door (root)
+docs/README.md, docs/roadmap.md
+docs/spec/README.md             confidence legend + precedence
+docs/spec/invariants.md         sample spec file (ID + confidence + citation format)
+tests/spec/citation-lib.ts      citation-resolution machinery
+tests/spec/citations.test.ts    every `path › symbol` resolves to real code
+tests/spec/catalog-integrity.test.ts  stable IDs are append-only (locked snapshot)
+tests/spec/snapshots/catalog-ids.json
+```
+
+Copy it, replace the `<placeholders>`, wire `tests/spec/**` into your test runner,
+and you have the full system on day one. The rest of this doc explains *why* each
+piece exists.
+
 ---
 
 ## Which reference repo is more optimized? (you asked)
@@ -50,10 +71,22 @@ as a first-class, machine-verified artifact:
 - **Link-integrity** + **rationale-anchor** tests that fail when a doc references a path or
   anchor that no longer exists.
 
-**Recommended baseline = both.** Use gp-learning's confidence-rated, citation-verified
-`docs/spec/` *and* multi-ecommerce's stable-ID catalog + refactor-playbook + architecture
-guards. Neither alone is complete: citations prove a reference *resolves*; stable IDs make
-rules *addressable*; architecture guards prove the rule is actually *held* in code.
+**The canonical factory approach = gp-learning's spec model as the base, plus
+multi-ecommerce's catalog + guards layered on.** In one line: *gp-learning tells you
+what's true and proves the references resolve; multi-ecommerce makes the rules
+addressable and proves they're actually enforced.* Concretely:
+
+- **Skeleton** (from gp-learning): `docs/spec/` one-topic-per-file, confidence levels,
+  `` `path` › `symbol` `` citations, a citation test, a generated `spec.json`, precedence
+  *Code → spec → agent door*.
+- **Muscles** (from multi-ecommerce): an append-only stable-ID catalog with a
+  catalog-integrity test, a `refactor-playbook.md`, an `anti-patterns.md`, and
+  architecture-invariant guards that prove a rule is *held* in code, not merely *cited*.
+
+Neither alone is complete: citations prove a reference *resolves*; stable IDs make rules
+*addressable*; architecture guards prove the rule is actually *held*. The
+[`skeleton/`](./skeleton/) ships the base + the two guard tests; add the playbook,
+anti-patterns, and architecture guards as the project grows.
 
 ---
 
