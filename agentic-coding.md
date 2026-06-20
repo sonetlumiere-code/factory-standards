@@ -28,11 +28,12 @@ tests/spec/citation-lib.ts      citation-resolution machinery
 tests/spec/citations.test.ts    every `path › symbol` resolves to real code
 tests/spec/catalog-integrity.test.ts  stable IDs are append-only (locked snapshot)
 tests/spec/snapshots/catalog-ids.json
+tests/architecture/architecture-invariants.test.ts  tenant-isolation + authz guards
 ```
 
-Copy it, replace the `<placeholders>`, wire `tests/spec/**` into your test runner,
-and you have the full system on day one. The rest of this doc explains *why* each
-piece exists.
+Copy it, replace the `<placeholders>`, wire `tests/**` into your test runner, and
+you have the full system on day one. The rest of this doc explains *why* each piece
+exists.
 
 ---
 

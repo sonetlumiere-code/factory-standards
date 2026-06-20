@@ -4,30 +4,31 @@ The engineering baseline for every project built by the software factory. These
 are **agent-facing** docs: at the start of a new project, point your coding agent
 at the relevant file(s) and tell it to treat them as binding defaults.
 
-> Usage with a coding agent:
-> _"Before scaffolding, read `factory-standards/vercel-nextjs-production-baseline.md`
-> and apply every item marked **MUST** for this stack. List any you're deferring and why."_
+> Usage with a coding agent: paste the prompt in
+> [bootstrap-prompt.md](./bootstrap-prompt.md) into a fresh session to scaffold a new
+> app from these standards. To audit an existing repo, point the agent at
+> [vercel-nextjs-production-baseline.md](./vercel-nextjs-production-baseline.md) and ask
+> for a gap report by ID.
 
 ## Documents
 
 | Doc | Status | Covers |
 | --- | --- | --- |
+| [stack.md](./stack.md) | ✅ ready | The canonical stack — the default library for every need, with version floors and rationale |
+| [bootstrap-prompt.md](./bootstrap-prompt.md) | ✅ ready | The invocation: a copy-paste prompt (+ skill notes) to scaffold a new app from these standards, with acceptance criteria |
 | [vercel-nextjs-production-baseline.md](./vercel-nextjs-production-baseline.md) | ✅ ready | Production checklist for any Next.js app deployed to Vercel — env, DB (incl. Neon pooled-vs-direct), security, observability, reliability, CI/CD, Vercel specifics |
 | [tooling-config.md](./tooling-config.md) | ✅ ready | Exact Prettier / ESLint (flat + custom guards) / TypeScript / EditorConfig / scripts configs to start every project with |
 | [agentic-coding.md](./agentic-coding.md) | ✅ ready | Docs-as-executable-guardrails: how to structure a codebase so an AI agent stays correct and can't drift — plus ideas to improve agentic coding |
-| [skeleton/](./skeleton/) | ✅ ready | Copy-paste starter for the agentic-docs system: agent door, `docs/spec/` layout + sample, and the guard tests (citation + catalog-integrity) — verified green |
+| [skeleton/](./skeleton/) | ✅ ready | Copy-paste starter for the agentic-docs system: agent door, `docs/spec/` layout + sample, and the guard tests (citation, catalog-integrity, tenant-isolation/authz) — verified green |
 
 ## Documents to add next (your knowledge base roadmap)
 
 These are the natural companions — each one a standalone doc an agent can be pointed at.
 Suggested order of authoring is roughly top-to-bottom (foundations first).
 
-- **`stack.md`** — your canonical stack and *why* (Next.js App Router, React, TS strict,
-  Postgres/Neon, Drizzle, Better Auth, Tailwind, shadcn, Resend, Cloudinary, pnpm). Pin
-  versions or version ranges. The "we always reach for X" doc.
 - **`coding-conventions.md`** — file naming, folder layout, the data-layer / server-action
-  contract, validation-at-the-boundary rule, naming, comment style. (Your two projects'
-  `CLAUDE.md` / `AGENTS.md` are the seed for this.)
+  contract, validation-at-the-boundary rule, naming, comment style. (The skeleton's
+  `CLAUDE.md` is the seed for this.)
 - **`security-baseline.md`** — expand §Security below into its own doc: threat model,
   authn/authz, secrets, headers/CSP, dependency hygiene, OWASP Top 10 mapping, pentest
   cadence, responsible-disclosure (`security.txt`).
