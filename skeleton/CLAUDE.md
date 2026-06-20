@@ -6,6 +6,13 @@ live in `docs/spec/`; this file is the index and the non-negotiables.
 > **Source-of-truth precedence:** Code → `docs/spec/` → this file.
 > If code and the spec disagree, **the spec is wrong** — fix the spec.
 
+> ⚠️ **Non-negotiable: a change isn't done until its docs and tests match the real
+> code — in the same commit.** Update the matching `docs/spec/*.md` and its tests
+> whenever you change behavior; leave **no stale references** (renamed symbols, dead
+> paths, outdated rules). The citation/catalog guards in `tests/spec/` fail the build
+> on broken references, but the *semantic* pass — "does the sentence still describe the
+> code?" — is on you. See the checklist below.
+
 ## What this is
 
 <One paragraph: what the product is, the stack, and the single most important

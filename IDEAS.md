@@ -53,8 +53,10 @@ After any task, docs and tests must reflect the **real** code — no stale refer
 already exists in spirit (`agentic-coding.md` idea #7; gp-learning's precedence + citation
 tests + spec-sync CI). Elevate it:
 
-- A prominent rule in the skeleton `CLAUDE.md` "after making changes" checklist.
-- Optionally its own short doc, and wire the citation/spec-sync guards as the enforcement.
+- ✅ Prominent rule added to the skeleton `CLAUDE.md` (a ⚠️ callout under the precedence
+  block + the "after making changes" checklist).
+- TODO: optionally its own short doc, and wire the spec-sync CI nudge (warn when
+  `actions/`/`drizzle/schema/` change without `docs/spec/`) as active enforcement.
 - Reference: gp-learning's `docs/spec/README.md` precedence section + `tests/spec/citations.test.ts`.
 
 ## Suggested order
