@@ -33,7 +33,7 @@ shadcn, forms).
 | Reliable side effects | **transactional outbox** (`lib/events/*`) | From the data spine — emit in the business transaction; a dispatcher delivers. |
 | Scheduled work | **Vercel Cron** (`vercel.json`) → bearer-guarded routes | Same as full-stack; the routes are just Hono handlers. |
 | Background work | **`@vercel/functions` `waitUntil`** | Survive the response on serverless; retry-with-backoff for transient ops. |
-| Rate limiting | **Upstash Redis** or **Vercel KV** | Distributed — public API surfaces need it; in-memory is useless on a fleet. |
+| Distributed KV | **Upstash Redis** (REST) or **Vercel KV** | Rate limiting (public API surfaces need it), locks, idempotency stores, shared cache. HTTP-based — serverless can't pool sockets; in-memory is useless on a fleet. See [security.md](../security.md). |
 | Transactional email | **Resend** | Wrapped in the outbox. |
 
 ## Security & quality

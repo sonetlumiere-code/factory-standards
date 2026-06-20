@@ -50,6 +50,12 @@ placeholders.
   authenticated area (then it's really full-stack — say so and switch); `api-service` →
   skip SEO (N/A — no public HTML).
 
+**Q1b — Primary language / locale.** *(ask whenever there's a UI: static or full-stack)*
+Confirm the language the UI and content ship in (e.g. `en-US`, `es-AR`). **Don't default to
+English silently** — it's the user's call and it shapes every string. Then ask **multilingual?**
+(see Q7): single-language → just set the locale + write copy in it; multilingual → i18n routing
++ hreflang + `next-intl`. Skip for `api-service` (no UI).
+
 **Q2 — Tenancy / data isolation.** Single-admin · Single-tenant · Multi-tenant.
 - **Always confirm** when there's a DB (full-stack or API) — even if the description says
   "not multi-tenant," confirm the exact mode. This is *the* security decision: it selects
@@ -123,7 +129,7 @@ placeholders.
 | | Fire-and-forget | `@vercel/functions` `waitUntil` + retry-with-backoff. |
 | | Scheduled | Vercel Cron (`vercel.json`) → bearer-guarded route handlers. |
 | | Must-not-lose | The **transactional outbox** recipe (emit in-transaction; dispatcher with retry/dead-letter) + cron sweep. |
-| **Defaults (Tier 3)** | applied unless overridden | Sentry stub now / DSN at deploy (OBS-2); Vercel Analytics + Speed Insights on (OBS-3); Upstash rate limiting on abuse-prone surfaces, pre-prod (SEC-6). |
+| **Defaults (Tier 3)** | applied unless overridden | Sentry stub now / DSN at deploy (OBS-2); Vercel Analytics + Speed Insights on (OBS-3); rate limiting on abuse-prone surfaces — auth→Postgres, custom→Upstash, pre-prod (SEC-6, [security.md](./security.md)). |
 
 > Recipes and optional docs are **pulled in only when an answer selects them**. A "None"
 > answer means that surface does not appear in the scaffold.
@@ -139,6 +145,7 @@ Bootstrap plan for <app-name>  (archetype: <…>)
 ─────────────────────────────────────────────
 Project / folder  ./<app-name>   (confirmed with the user — Q0)
 Stack file        stacks/<archetype>.md
+Language          <e.g. es-AR | en-US>   <single-language | multilingual → i18n>
 Tenancy           <single-admin | single-tenant | multi-tenant | N/A>  → <ownership|tenant> guard
 Auth & roles      <none | Better Auth (roles: …) | API keys/JWT>
 Payments          <none | simulated | real gateway>  → <outbox? webhooks? cents>
@@ -160,6 +167,12 @@ Wait for a "go" before scaffolding. If the user corrects a row, update it and re
 Run the same disciplined scaffold the static prompt describes — now parameterized by the
 decisions above:
 
+0. **Scaffold with the framework's official CLI first**, then layer the standards on top —
+   don't hand-write the base tree. Use `pnpm create next-app@latest <name>` (full-stack),
+   `pnpm create astro@latest <name>` (static site), or `pnpm create hono@latest <name>`
+   (API). This keeps the base structure and versions current with the framework; then pin
+   exact versions and apply the steps below. Set the primary locale (Q1b) in the framework's
+   i18n config as part of this step.
 1. **Tooling** — exactly per [tooling-config.md](./tooling-config.md): Prettier, ESLint
    flat config with the `process.env` guard, `tsconfig` strict + `noUncheckedIndexedAccess`,
    `.editorconfig`, standard scripts, engine + `packageManager` pins, `.nvmrc`.

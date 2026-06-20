@@ -48,7 +48,7 @@ only what's specific to a full-stack web app.
 | Image storage / CDN | **Cloudinary** | Uploads + transforms; allowlist its host in `next.config` and CSP. |
 | Background work | **`@vercel/functions` `waitUntil`** | Survives the response on serverless; wrap transient ops in retry-with-backoff. |
 | Scheduled work | **Vercel Cron** (`vercel.json`) | Bearer-guarded route handlers; Pro plan for sub-daily. |
-| Rate limiting | **Upstash Redis** or **Vercel KV** | Distributed — in-memory limiters are useless on a serverless fleet. |
+| Distributed KV | **Upstash Redis** (REST) or **Vercel KV** | The canonical external KV for rate limiting, locks, idempotency stores, and **shared cache** across instances/regions. HTTP-based (serverless can't pool sockets). For plain data caching reach for Next's **Data Cache / ISR first** — add Upstash only when you need cross-instance state the native cache can't give. Auth-endpoint rate limiting is handled in Postgres (see [security.md](../security.md)), so Upstash is for custom surfaces (checkout, lead capture, public APIs). |
 | Dates / timezones | **date-fns** (+ **date-fns-tz**) | Explicit, tree-shakeable; no global mutable locale. |
 
 ## Observability & quality (beyond the universal core)

@@ -21,7 +21,8 @@ Treat `<FACTORY_STANDARDS_PATH>/` as binding defaults. Before writing any code:
 
 2. **INTERVIEW** — follow `bootstrap-interactive.md`'s three-tier questionnaire with the
    `AskUserQuestion` tool:
-   - **Tier 1 (always confirm):** project name, archetype, **tenancy** (confirm even if
+   - **Tier 1 (always confirm):** project name, archetype, **primary language/locale**
+     (when there's a UI — don't default to English silently), **tenancy** (confirm even if
      implied — it picks the security guard), auth & roles.
    - **Tier 2 (adaptive — skip if implied, "no" prunes):** payments, transactional email
      (→ Resend), file/media uploads (→ Cloudinary), public pages/SEO (+ i18n), background
@@ -34,7 +35,10 @@ Treat `<FACTORY_STANDARDS_PATH>/` as binding defaults. Before writing any code:
 
 Then, after I confirm:
 
-3. **TOOLING** — scaffold exactly per `tooling-config.md`: Prettier, ESLint flat
+3. **SCAFFOLD BASE** — create the project with the framework's official CLI first
+   (`pnpm create next-app@latest` / `create astro` / `create hono`), then layer the
+   standards on top. Don't hand-write the base tree; set the primary locale here.
+   Then, **TOOLING** — scaffold exactly per `tooling-config.md`: Prettier, ESLint flat
    config with the `process.env` guard (+ others that apply), `tsconfig` strict +
    `noUncheckedIndexedAccess`, `.editorconfig`, the standard scripts, engine +
    `packageManager` pins, `.nvmrc`.

@@ -20,6 +20,7 @@ at the relevant file(s) and tell it to treat them as binding defaults.
 | [vercel-nextjs-production-baseline.md](./vercel-nextjs-production-baseline.md) | ✅ ready | Production checklist for any Next.js app deployed to Vercel — env, DB (incl. Neon pooled-vs-direct), security, observability, reliability, CI/CD, Vercel specifics |
 | [tooling-config.md](./tooling-config.md) | ✅ ready | Exact Prettier / ESLint (flat + custom guards) / TypeScript / EditorConfig / scripts configs to start every project with |
 | [seo.md](./seo.md) | ✅ ready | Conditional SEO guide (public pages only): metadata + OG, robots/sitemap + the DB-at-build `force-dynamic` gotcha, JSON-LD, canonical, hreflang. Next.js + Astro |
+| [security.md](./security.md) | ✅ ready | The "how" behind the `SEC-*` baseline: rate limiting (auth→Postgres / custom→Upstash, fail-open, IP+identifier keying), CSP, webhooks, secret encryption, audit log |
 | [agentic-coding.md](./agentic-coding.md) | ✅ ready | Docs-as-executable-guardrails: how to structure a codebase so an AI agent stays correct and can't drift — plus ideas to improve agentic coding |
 | [skeleton/](./skeleton/) | ✅ ready | Copy-paste starter for the agentic-docs system: agent door, `docs/spec/` layout + sample, and the guard tests (citation, catalog-integrity, scope-isolation [tenant or ownership]/authz) — verified green |
 | [recipes/](./recipes/) | ✅ ready | Opt-in patterns to pull in when an app needs them (not in the core skeleton). First recipe: a drop-in transactional outbox (schema + dispatcher + cron + test) |

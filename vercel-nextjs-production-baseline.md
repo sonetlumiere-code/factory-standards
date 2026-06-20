@@ -81,6 +81,9 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
 
 ## 4. Security
 
+> Implementation patterns for these items live in [security.md](./security.md) — rate
+> limiting, CSP, webhook verification, secret encryption, audit logging.
+
 - **SEC-1 (MUST)** Set security response headers on every route — via `next.config.ts`
   `headers()` or middleware:
   - `Strict-Transport-Security` (HSTS)
@@ -103,8 +106,11 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
   server-side session validation. (Better Auth handles most; verify the config.)
 - **SEC-6 (MUST, pre-prod)** Distributed rate limiting on abuse-prone public surfaces
   (login, signup, password reset, self-enroll/checkout, uploads, enumeration endpoints).
-  In-memory limiters are useless on a serverless fleet — use Upstash Redis / Vercel KV.
-  Better Auth's DB-backed limiter covers auth endpoints.
+  In-memory limiters are useless on a serverless fleet (per-instance, reset on cold start).
+  **Two surfaces, two stores:** auth endpoints → Better Auth's built-in limiter, but it
+  **defaults to in-memory** — set `rateLimit.storage = "database"` so counters live in
+  Postgres; custom surfaces (checkout, lead capture, public APIs) → Upstash Redis / Vercel
+  KV, keyed by IP + identifier, **fail-open**. The how: [security.md](./security.md).
 - **SEC-7 (MUST)** Webhooks: verify the provider signature **before** parsing the body,
   and dedupe deliveries with an idempotency table (`UNIQUE(provider, external_id)` +
   `ON CONFLICT DO NOTHING`). _Pattern:_ `app/api/webhooks/<provider>/route.ts`.
