@@ -20,10 +20,11 @@ Treat `<FACTORY_STANDARDS_PATH>/` as binding defaults. Before writing any code:
    `vercel-nextjs-production-baseline.md`, `agentic-coding.md`, `skeleton/`, `recipes/`.
 
 2. **INTERVIEW** — follow `bootstrap-interactive.md`: ask the **adaptive questionnaire**
-   (archetype, tenancy, auth, payments, public pages/SEO, background work) with the
-   `AskUserQuestion` tool, skipping any question already implied by the description or an
-   earlier answer. Map the answers to the pre-set factory decisions, then **print the
-   decision sheet and STOP** for my go before writing code.
+   (confirm the project name first, then archetype, tenancy, auth, payments, public
+   pages/SEO, background work) with the `AskUserQuestion` tool, skipping any question
+   already implied by the description or an earlier answer — but **always confirm the
+   name** (it's not inferable). Map the answers to the pre-set factory decisions, then
+   **print the decision sheet and STOP** for my go before writing code.
 
 Then, after I confirm:
 

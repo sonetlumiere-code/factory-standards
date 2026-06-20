@@ -33,6 +33,12 @@ and answer the questions.
 
 Ask in this order. Each question lists its options and when to **skip** it.
 
+### Q0 — Project name *(always confirm — never assume)*
+Derive a kebab-case folder name from the description and **confirm it** with the user
+(`./<name>`). The name is the user's call, not inferable from the description — propose
+your best guess but let them override before anything else. Use the confirmed name for the
+folder and the `<Project>` placeholders in the skeleton.
+
 ### Q1 — Archetype *(always ask, unless the description names it)*
 Static site / landing · Full-stack web app · API-only / backend service.
 - Picks the stack file in `stacks/` and which baseline items apply.
@@ -100,6 +106,7 @@ Render the resolved choices as a table before writing any code, e.g.:
 ```
 Bootstrap plan for <app-name>  (archetype: <…>)
 ─────────────────────────────────────────────
+Project / folder  ./<app-name>   (confirmed with the user — Q0)
 Stack file        stacks/<archetype>.md
 Tenancy           <single-admin | single-tenant | multi-tenant | N/A>  → <ownership|tenant> guard
 Auth              <none | Better Auth | API keys/JWT>
