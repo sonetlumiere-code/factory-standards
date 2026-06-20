@@ -6,7 +6,22 @@ paste into a fresh session started from a directory that can read this repo.
 
 ---
 
-## The prompt (copy, fill `{{APP}}` and `{{PATH}}`)
+## Filling in the two placeholders
+
+Replace them inline before pasting (the `{{ }}` are not literal):
+
+- `{{APP}}` → the new project folder name, e.g. `nueva-app`.
+- `{{PATH}}` → the **absolute** path to the directory that *contains* this repo,
+  **with no leading or trailing slash** — the template already adds them. Since the
+  template reads `/{{PATH}}/factory-standards/`, use `Users/<you>/Desktop/dev`
+  (so it resolves to `/Users/<you>/Desktop/dev/factory-standards`).
+  Don't use a relative path like `Desktop/dev/` — the template's leading `/` would
+  make it an absolute path from the disk root, not your home.
+
+Start the fresh session from the directory where `{{APP}}` should be created (e.g.
+`~/Desktop/dev`) so `./{{APP}}` lands there as a sibling of `factory-standards`.
+
+## The prompt
 
 ```
 Bootstrap a new Next.js app at ./{{APP}} — <one paragraph: what it does, the core
