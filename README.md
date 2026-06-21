@@ -29,14 +29,13 @@ at the relevant file(s) and tell it to treat them as binding defaults.
 ## Documents to add next (your knowledge base roadmap)
 
 These are the natural companions — each one a standalone doc an agent can be pointed at.
-Suggested order of authoring is roughly top-to-bottom (foundations first).
+Add one when a real project needs it, not speculatively. **Already shipped:**
+[security.md](./security.md), [seo.md](./seo.md), [performance-budgets.md](./performance-budgets.md),
+[VERSIONING.md](./VERSIONING.md), [anti-patterns.md](./anti-patterns.md).
 
 - **`coding-conventions.md`** — file naming, folder layout, the data-layer / server-action
   contract, validation-at-the-boundary rule, naming, comment style. (The skeleton's
   `CLAUDE.md` is the seed for this.)
-- **`security-baseline.md`** — expand §Security below into its own doc: threat model,
-  authn/authz, secrets, headers/CSP, dependency hygiene, OWASP Top 10 mapping, pentest
-  cadence, responsible-disclosure (`security.txt`).
 - **`observability-baseline.md`** — logging schema, error tracking, metrics, tracing,
   dashboards, SLOs, alert routing, on-call.
 - **`testing-strategy.md`** — the test pyramid for the stack: unit (pure helpers),
@@ -47,10 +46,6 @@ Suggested order of authoring is roughly top-to-bottom (foundations first).
   logs, data-subject requests.
 - **`accessibility.md`** — WCAG 2.2 AA target, keyboard nav, focus management, semantic
   HTML, the skip-link pattern, automated a11y checks in CI.
-- **`performance-budgets.md`** — Core Web Vitals targets, bundle-size budgets, image
-  policy, caching/ISR strategy, when to use Edge vs Node runtime.
-- **`ci-cd.md`** — pipeline stages, branch protection, preview/staging/prod promotion,
-  release/versioning, rollback.
 - **`incident-response.md`** — severity levels, runbooks, comms templates, postmortems.
 - **`adr/`** — Architecture Decision Records template + index. One ADR per
   significant, hard-to-reverse choice.
