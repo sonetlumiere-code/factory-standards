@@ -43,7 +43,7 @@ generated: 2026-06-20
 
 - `git log v0.1.0..HEAD -- .` in factory-standards shows everything an app on `v0.1.0` is
   missing.
-- The audit mode (see [bootstrap-prompt.md](./bootstrap-prompt.md)) can diff an app against the
+- The `/audit-app` command ([.claude/commands/audit-app.md](./.claude/commands/audit-app.md)) can diff an app against the
   current standards and report the gap by ID.
 
 > Keep it lightweight: one tag per standards change that matters, one `.factory-version` line

@@ -4,19 +4,17 @@ The engineering baseline for every project built by the software factory. These
 are **agent-facing** docs: at the start of a new project, point your coding agent
 at the relevant file(s) and tell it to treat them as binding defaults.
 
-> Usage with a coding agent: paste the prompt in
-> [bootstrap-prompt.md](./bootstrap-prompt.md) into a fresh session to scaffold a new
-> app from these standards. To audit an existing repo, point the agent at
-> [vercel-nextjs-production-baseline.md](./vercel-nextjs-production-baseline.md) and ask
-> for a gap report by ID.
+> Usage with a coding agent: run `/bootstrap-app <description>` (or follow
+> [bootstrap-interactive.md](./bootstrap-interactive.md)) in a fresh session to scaffold a
+> new app from these standards. To audit an existing repo, run `/audit-app` (see
+> [.claude/commands/audit-app.md](./.claude/commands/audit-app.md)) for a gap report by ID.
 
 ## Documents
 
 | Doc | Status | Covers |
 | --- | --- | --- |
 | [stacks/](./stacks/) | ✅ ready | The canonical stacks, **keyed by archetype** — a shared spine (language, validation, tooling, data) plus per-archetype files for static-site (Astro), full-stack web (Next.js), API service (Hono), and desktop (Tauri). Start at [stacks/README.md](./stacks/README.md) |
-| [bootstrap-interactive.md](./bootstrap-interactive.md) | ✅ ready | **The primary invocation** — an adaptive questionnaire (archetype, tenancy, auth, payments, SEO, background) that maps answers → pre-set factory decisions, prints a decision sheet, then scaffolds |
-| [bootstrap-prompt.md](./bootstrap-prompt.md) | ✅ ready | Fallback invocation: a static copy-paste prompt (+ skill notes) for when every choice is already known, with acceptance criteria |
+| [bootstrap-interactive.md](./bootstrap-interactive.md) | ✅ ready | **The invocation** — an adaptive questionnaire (archetype, language, tenancy, auth, payments, SEO, background) that maps answers → pre-set factory decisions, prints a decision sheet, then scaffolds. Run via `/bootstrap-app` |
 | [`/audit-app`](./.claude/commands/audit-app.md) | ✅ ready | Slash command to audit an existing app against all standards — gap report by ID + severity, uses `.factory-version` to separate gaps from drift; `--fix` applies safe in-repo gaps |
 | [vercel-nextjs-production-baseline.md](./vercel-nextjs-production-baseline.md) | ✅ ready | Production checklist for any Next.js app deployed to Vercel — env, DB (incl. Neon pooled-vs-direct), security, observability, reliability, CI/CD, Vercel specifics |
 | [tooling-config.md](./tooling-config.md) | ✅ ready | Exact Prettier / ESLint (flat + custom guards) / TypeScript / EditorConfig / scripts configs to start every project with |

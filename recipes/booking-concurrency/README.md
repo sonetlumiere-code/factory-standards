@@ -4,8 +4,7 @@ Prevent two appointments from overlapping on the same scarce resource (staff mem
 room, chair, machine) — the central invariant of any scheduling product. Enforced by a
 **Postgres `EXCLUDE` constraint**, not app code.
 
-Proven in a real booking SaaS dogfood ([turnos-app](../../IDEAS.md)); this is the
-generalized version.
+Proven in a real booking SaaS dogfood, then generalized.
 
 ## Why a DB constraint, not app code
 

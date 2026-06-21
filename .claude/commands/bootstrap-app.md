@@ -44,7 +44,9 @@ Then, after I confirm:
    Prettier, ESLint flat
    config with the `process.env` guard (+ others that apply), `tsconfig` strict +
    `noUncheckedIndexedAccess`, `.editorconfig`, the standard scripts, engine +
-   `packageManager` pins, `.nvmrc`.
+   `packageManager` pins, `.nvmrc`. **If the app has UI, set up shadcn/ui on Base UI
+   (a `base-*` style in `components.json`, imports from `@base-ui-components/react`) —
+   never install Radix.**
 
 4. **AGENTIC DOCS** — copy `skeleton/` into the project. Fill `CLAUDE.md` and
    `docs/spec/` for THIS app: real rules, real `path › symbol` citations (not the
@@ -62,6 +64,3 @@ Then, after I confirm:
 
 Scope discipline: match effort to the app — don't gold-plate a small project. Every "no"
 in the interview prunes a branch; don't scaffold what wasn't asked for.
-
-> Prefer this interactive flow. The static one-shot prompt in `bootstrap-prompt.md` is the
-> fallback for when every choice is already known.

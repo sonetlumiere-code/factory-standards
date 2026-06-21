@@ -1,10 +1,8 @@
 # Interactive Bootstrap
 
-The real invocation. Instead of asking you to fill placeholders in a static prompt,
-the agent **asks a short, adaptive questionnaire first**, maps each answer to
-pre-established factory decisions, prints a **decision sheet**, and only then scaffolds.
-The static [bootstrap-prompt.md](./bootstrap-prompt.md) stays as the fallback (use it
-when you already know every choice and want to paste one block).
+The invocation. The agent **asks a short, adaptive questionnaire first**, maps each
+answer to pre-established factory decisions, prints a **decision sheet**, and only then
+scaffolds.
 
 This file is written **for the agent** running a bootstrap. If you're a human, just run
 `/bootstrap-app <description>` (or paste the [activation block](#activation-block) below)
@@ -182,7 +180,9 @@ decisions above:
    [VERSIONING.md](./VERSIONING.md)).
 1. **Tooling** — exactly per [tooling-config.md](./tooling-config.md): Prettier, ESLint
    flat config with the `process.env` guard, `tsconfig` strict + `noUncheckedIndexedAccess`,
-   `.editorconfig`, standard scripts, engine + `packageManager` pins, `.nvmrc`.
+   `.editorconfig`, standard scripts, engine + `packageManager` pins, `.nvmrc`. **If the app
+   has a UI, set up shadcn/ui on Base UI — pick a `base-*` style in `components.json` (imports
+   from `@base-ui-components/react`); never install Radix** (see [stacks/full-stack-web.md](./stacks/full-stack-web.md)).
 2. **Agentic docs** — copy `skeleton/` in. Fill `CLAUDE.md` + `docs/spec/` for THIS app
    with real `path › symbol` citations (not placeholders). **Keep only the scope guard the
    tenancy answer selected**; adapt its token + the permission-check matcher. **Compose the
@@ -211,10 +211,28 @@ decisions above:
      agent prompted to *refute* the access/authz/money invariants against the code before
      declaring done.
 
-Acceptance criteria (superset of [bootstrap-prompt.md](./bootstrap-prompt.md)):
-tooling matches, guards green with real citations, a deferral table names every un-applied
-MUST/SHOULD, at least one project-specific architecture guard is authored, **an integration
-test exists for each critical invariant**, and the **adversarial review pass** ran clean.
+## Acceptance criteria (how to grade the result)
+
+- Tooling matches [tooling-config.md](./tooling-config.md) (`pnpm lint && pnpm typecheck`).
+- `skeleton/` copied; `CLAUDE.md` + `docs/spec/` filled with **real** citations (not the
+  placeholders); `pnpm test` guards green (citation + catalog + architecture).
+- UI (if any) uses **shadcn/ui on Base UI**, not Radix.
+- A **deferral table** names every un-applied MUST/SHOULD with a reason. (A MUST silently
+  skipped means the standard didn't stick — tighten its wording.)
+- At least one **project-specific architecture guard** authored (Pattern B, not just Pattern A).
+- **An integration test exists for each critical invariant** (incl. the domain ones), and the
+  **adversarial review pass** ran clean.
+- `.factory-version` written ([VERSIONING.md](./VERSIONING.md)).
+
+## Keeping the standards alive (so this stays worth running)
+
+- **Dogfood.** Every project you bootstrap surfaces a gap or a better default — fold it back
+  into the relevant standards doc in the same week, not "later."
+- **One correction → one guard.** When you correct an agent twice for the same thing, encode it
+  (a lint rule, an architecture test, a spec invariant, or a line in
+  [anti-patterns.md](./anti-patterns.md)) so the next agent gets it for free.
+- **Don't outpace your dogfooding.** Add a standards doc when a real project needs it, not
+  speculatively — every doc you add is a doc that can rot.
 
 ---
 

@@ -5,7 +5,7 @@ Gate features and quotas by subscription plan. The factory already has RBAC
 allows*. Charging is not gating: a payment integration tells you money moved; entitlements
 decide what the account can do.
 
-Proven in a real multi-tenant SaaS dogfood ([turnos-app](../../IDEAS.md)).
+Proven in a real multi-tenant booking SaaS dogfood, then generalized.
 
 ## The shape
 
