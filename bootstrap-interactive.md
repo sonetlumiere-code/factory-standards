@@ -196,9 +196,17 @@ decisions above:
 4. **Recipes & optional docs** — pull in only what the answers selected (outbox, SEO, …).
 5. **Verify the rules actually hold (not just that guards are green).** Static guards prove a
    rule's *shape*, not its *correctness* ([anti-patterns.md](./anti-patterns.md) AP-1). So:
-   - For **every critical invariant** (access resolution, authorization, money), write an
-     **integration test** (testcontainers) asserting the **negative** case — user B can't
-     reach user A's / unpublished / unpaid data — across *every* branch of the rule.
+   - **Enumerate the DOMAIN invariants, not just the infra ones.** The factory's guards/baseline
+     cover infra (tenant/owner isolation, authz, money); they do **not** know your domain. Ask
+     "what must always be true in THIS domain that a generic guard wouldn't catch?" — typically
+     **concurrency** (e.g. no double-booking → Postgres `EXCLUDE` constraint), **uniqueness**,
+     **state-machine transitions**, **time/timezone correctness**, and **plan entitlements/
+     quotas** (gating paid features server-side, not just charging). Each gets an invariant +
+     test. Missing these is [AP-9](./anti-patterns.md).
+   - For **every critical invariant** (access resolution, authorization, money, **plus the
+     domain ones above**), write an **integration test** (testcontainers) asserting the
+     **negative** case — user B can't reach user A's / unpublished / unpaid data; a second
+     booking of the same slot fails; an over-quota action is rejected — across *every* branch.
    - Run an **adversarial review pass** ([agentic-coding.md](./agentic-coding.md) #9): a second
      agent prompted to *refute* the access/authz/money invariants against the code before
      declaring done.

@@ -80,4 +80,19 @@ file is `proxy.ts` and the function is `proxy()`. (Caught in a real bootstrap �
 **Right pattern:** use `proxy.ts` (NEXT-7). Migrate with `npx @next/codemod@canary
 middleware-to-proxy .`. And prefer auth inside Server Actions/route handlers over proxy.
 
+### AP-9 — Modeling only the infra invariants, missing the domain ones
+**Wrong:** the bootstrap nails tenant/owner isolation, authz, and money (the invariants the
+factory's guards/baseline cover) and ships — with no guard or test for the domain's *own*
+critical rules.
+**Why it's plausible:** every checklist the factory ships is infra-level; domain invariants
+aren't in any of them, so nothing prompts for them.
+**Reality:** a booking app with no anti-double-booking rule, paid tiers with no entitlement
+gating (only charging), or scheduling with no timezone discipline is broken regardless of green
+infra guards. Real case: the turnos-app decision sheet had tenant/authz/money but no
+double-booking, no entitlement gating, and no timezone invariant — none were prompted.
+**Right pattern:** in the scaffold's "verify the rules" step, explicitly enumerate the DOMAIN
+invariants — **concurrency** (e.g. `EXCLUDE` constraint for overlapping slots), **uniqueness**,
+**state-machine transitions**, **time/timezone**, **plan entitlements/quotas** — each with an
+integration test. Ask: "what must always hold in THIS domain that a generic guard can't see?"
+
 <!-- Append new anti-patterns below as dogfooding surfaces them. -->
