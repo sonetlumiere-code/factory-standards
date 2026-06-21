@@ -17,7 +17,10 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
 - **REPO-1 (MUST)** Pin the Node version with `.nvmrc` **and** `engines.node` in
   `package.json`. Vercel reads it; local dev matches prod.
 - **REPO-2 (MUST)** Pin the package manager (`packageManager` field or `engines.pnpm`)
-  and commit the lockfile. Reproducible installs across machines and CI.
+  and commit the lockfile. Reproducible installs across machines and CI. **Keep the Node pin
+  compatible with pnpm:** pnpm ≥10.13 needs Node ≥22.13 — use the **22** LTS line, or CI fails
+  with `requires at least Node.js v22.13` even when it builds locally. See
+  [tooling-config.md](./tooling-config.md) TOOL-6.
 - **REPO-3 (MUST)** TypeScript `strict: true`. _Pattern:_ `tsconfig.json`.
 - **REPO-4 (MUST)** Lint + format enforced (ESLint + Prettier) with a single command.
   Full configs (with snippets) in [tooling-config.md](./tooling-config.md).

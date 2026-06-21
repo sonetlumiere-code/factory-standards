@@ -164,11 +164,16 @@ Every project exposes the same verbs, so an agent never has to guess:
 ```jsonc
 {
   "packageManager": "pnpm@10.x", // exact, so CI + local + Vercel agree
-  "engines": { "node": ">=20", "pnpm": ">=10" }
+  "engines": { "node": ">=22.13", "pnpm": ">=10" }
 }
 ```
 
-Add a matching `.nvmrc` (`20`). Vercel and `actions/setup-node` both read it.
+Add a matching `.nvmrc` (`22`). Vercel and `actions/setup-node` both read it.
+
+> ⚠️ **Keep Node and pnpm compatible.** pnpm **≥10.13 requires Node ≥22.13** — pin Node to the
+> **22** LTS line, not 20. A repo on `.nvmrc 20` + `pnpm@10.x` builds locally (you have a newer
+> Node) but **fails in CI** with `This version of pnpm requires at least Node.js v22.13`. When
+> you bump pnpm, re-check its Node floor and move `engines.node` / `.nvmrc` together.
 
 ## TOOL-7 (MAY) — Git hooks
 

@@ -129,4 +129,14 @@ purpose — testcontainers are already torn down). Caught in two real repos at t
 sitemap) or `export const revalidate = N` (ISR). [seo.md](./seo.md) §2; enforced by the
 **build-time DB safety** guard in [CATALOG.md](./skeleton/tests/architecture/CATALOG.md).
 
+### AP-13 — Node pin out of sync with pnpm (CI-only failure)
+**Wrong:** `engines.node: ">=20"` / `.nvmrc 20` alongside `packageManager: pnpm@10.x`.
+**Why it's plausible:** it works locally (you have a newer Node installed), and `20` was the
+default Node pin for years.
+**Reality:** pnpm **≥10.13 requires Node ≥22.13**. CI reads `.nvmrc`, installs Node 20, and
+`pnpm install` aborts with `This version of pnpm requires at least Node.js v22.13` — green
+locally, red in CI, every time. Hit a real repo.
+**Right pattern:** pin Node to the **22** LTS line (`engines.node: ">=22.13"`, `.nvmrc 22`);
+when you bump pnpm, re-check its Node floor and move both together. (REPO-2 / TOOL-6.)
+
 <!-- Append new anti-patterns below as dogfooding surfaces them. -->

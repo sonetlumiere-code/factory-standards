@@ -34,7 +34,8 @@ The interactive bootstrap asks for this; if you scaffold by hand, choose here.
 | Capability | Canonical choice | Floor | Why |
 | ---------- | ---------------- | ----- | --- |
 | Language | **TypeScript** (`strict`) | 5.x | `strict` + `noUncheckedIndexedAccess` non-negotiable (see [tooling-config.md](../tooling-config.md)). |
-| Package manager | **pnpm** | 10 | Fast, strict, content-addressed store. Pin via `packageManager`. |
+| Package manager | **pnpm** | 10 | Fast, strict, content-addressed store. Pin via `packageManager`. Needs **Node ≥22.13** (the 22 LTS line) — keep `engines.node`/`.nvmrc` aligned with pnpm ([tooling-config.md](../tooling-config.md)). |
+| Runtime | **Node.js** | 22 (LTS) | Pin via `.nvmrc` + `engines.node`. Floor tracks pnpm's requirement (≥22.13 for pnpm 10.13+). |
 | Schema validation | **Zod v4** | 4 | Validate all external input at the boundary. v4 API only (`z.uuid()`, `z.email()`, `z.strictObject`, `result.error.issues`, `z.enum([...])`). Never `z.string().uuid()`, `.flatten()`, `z.nativeEnum()`. |
 | Schema location | **`lib/validations/<feature>.ts`** | — | Never inline in handlers/actions/components — one home per feature. |
 | Env validation | **`@t3-oss/env` + Zod** | — | Typed, fails the build on a missing/bad var. `@t3-oss/env-nextjs` for Next, `@t3-oss/env-core` elsewhere. Split client/server. |
