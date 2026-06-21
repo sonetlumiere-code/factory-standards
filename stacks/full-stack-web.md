@@ -27,7 +27,7 @@ only what's specific to a full-stack web app.
 
 | Capability | Canonical choice | Why |
 | ---------- | ---------------- | --- |
-| Forms | **react-hook-form + `zodResolver`** | Paired with the UI kit's field components. Schemas stay in `lib/validations/*` (universal core). |
+| Forms | **react-hook-form + `zodResolver`** + shadcn **`Field`** | Build every form with shadcn's `Field` family — `Field` / `FieldLabel` / `FieldDescription` / `FieldError` / `FieldGroup` / `FieldSet` — wired to react-hook-form (`FieldError` accepts RHF errors). It's the current, Base-UI-aligned pattern; **don't** use the older `Form`/`FormField` wrappers or hand-roll label/input/error markup. Schemas stay in `lib/validations/*` (universal core). |
 
 ## UI
 

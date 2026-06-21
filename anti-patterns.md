@@ -106,4 +106,16 @@ outage or a silent type regression.
 **Right pattern:** copy [recipes/neon-drizzle-client](./recipes/neon-drizzle-client/) (DB-1) —
 the merge of the best of all four, with the mandatory `ws` line. Keep `ws` in `dependencies`.
 
+### AP-11 — Building forms without shadcn's `Field`
+**Wrong:** forms hand-roll `label` + input + error markup, or use the older `Form`/`FormField`
+wrappers, instead of shadcn's `Field` family.
+**Why it's plausible:** the older `Form` pattern was the shadcn convention for years and most
+tutorials still show it; hand-rolling "just works."
+**Reality:** inconsistent spacing/accessibility across forms, and you re-implement what `Field`
+gives free (label association, description, error wiring). Caught in a real app whose forms
+skipped `Field`.
+**Right pattern:** `Field` / `FieldLabel` / `FieldDescription` / `FieldError` / `FieldGroup`
+wired to react-hook-form + `zodResolver` (`FieldError` accepts RHF errors); schemas in
+`lib/validations/*`. See [stacks/full-stack-web.md](./stacks/full-stack-web.md).
+
 <!-- Append new anti-patterns below as dogfooding surfaces them. -->
