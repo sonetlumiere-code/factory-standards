@@ -34,7 +34,7 @@ only what's specific to a full-stack web app.
 | Capability | Canonical choice | Why |
 | ---------- | ---------------- | --- |
 | Styling | **Tailwind CSS v4** | Utility-first, no config sprawl. |
-| Components | **shadcn/ui** | Copy-in components you own and theme; no black-box dependency. |
+| Components | **shadcn/ui on Base UI** (not Radix) | Copy-in components you own and theme; no black-box dependency. Use the **Base UI** primitives, not Radix: pick a `base-*` style in `components.json` so components import from `@base-ui-components/react`. Base UI (v1.0, Dec 2025) has wider coverage (combobox/multi-select/autocomplete), a render-prop API instead of Radix's `asChild`, and one package; Radix is now WorkOS-owned and stalling. Markup/styling are identical to the Radix variant — only the primitive changes. |
 | Icons | a single **`@/components/icons`** wrapper | Never import the icon library directly — one swap point, consistent sizing. |
 | Rich text | **Tiptap** | When you need a real editor. |
 | Drag & drop | **dnd-kit** | Sortable lists, reordering. |

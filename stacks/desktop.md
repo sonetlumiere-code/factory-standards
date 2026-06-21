@@ -13,7 +13,7 @@ full-stack backend) and holds little local state, or uses **local SQLite** for o
 | Capability | Canonical choice | Floor | Why |
 | ---------- | ---------------- | ----- | --- |
 | Shell | **Tauri** | 2 | OS webview (no bundled Chromium) → tiny bundles + low RAM; Rust backend; strong default security (explicit capabilities). |
-| Frontend | **React + Vite** + Tailwind v4 + shadcn/ui | — | The same UI vocabulary as full-stack web — components carry over. **SPA/static**, not SSR. |
+| Frontend | **React + Vite** + Tailwind v4 + shadcn/ui (on **Base UI**, not Radix) | — | The same UI vocabulary as full-stack web — components carry over. Use Base UI primitives (see [full-stack-web.md](./full-stack-web.md)). **SPA/static**, not SSR. |
 | Language | **TypeScript** (frontend) + **Rust** (Tauri backend commands) | — | Keep native logic in Rust commands; the webview stays pure TS/React. |
 | Local data (if any) | **SQLite** via `tauri-plugin-sql` (Drizzle works over it) | — | Only when the app needs offline/local storage; otherwise call the remote API. |
 | Auth (if networked) | **Better Auth** via the remote API; tokens in the OS keychain (`tauri-plugin-stronghold` / keyring) | — | Never store secrets in plain files; use the OS secret store. |
