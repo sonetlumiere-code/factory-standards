@@ -118,4 +118,15 @@ skipped `Field`.
 wired to react-hook-form + `zodResolver` (`FieldError` accepts RHF errors); schemas in
 `lib/validations/*`. See [stacks/full-stack-web.md](./stacks/full-stack-web.md).
 
+### AP-12 — A build-time route that queries the DB without opting out
+**Wrong:** `app/sitemap.ts` (or `robots.ts`) calls the data layer; Next pre-renders it at
+build, runs the query against CI's dummy `DATABASE_URL`, and the build exits 1.
+**Why it's plausible:** it works locally (you have a real DB on `DATABASE_URL`), the fix is one
+line, and every other page is already dynamic — so the sitemap is the *only* build-time DB hit.
+**Reality:** green build locally, red in CI **every time** (CI's build runs with a dummy DB on
+purpose — testcontainers are already torn down). Caught in two real repos at the `pnpm build` step.
+**Right pattern:** `export const dynamic = "force-dynamic"` (always fresh — best for a catalog
+sitemap) or `export const revalidate = N` (ISR). [seo.md](./seo.md) §2; enforced by the
+**build-time DB safety** guard in [CATALOG.md](./skeleton/tests/architecture/CATALOG.md).
+
 <!-- Append new anti-patterns below as dogfooding surfaces them. -->

@@ -80,7 +80,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 > may fail if the DB is unreachable in CI, or worse, ship a stale snapshot. For anything
 > data-driven, opt out of static evaluation: `export const dynamic = "force-dynamic"`
 > (always fresh) or `export const revalidate = 3600` (ISR). The same applies to public
-> pages whose content comes from the DB.
+> pages whose content comes from the DB. Enforced by the **build-time DB safety** guard
+> ([catalog](../skeleton/tests/architecture/CATALOG.md) / anti-pattern AP-12) — it fails
+> `pnpm test` before the build does.
 
 **Astro:** add `@astrojs/sitemap` (auto-generates `sitemap-index.xml` from your routes) and
 drop a static `public/robots.txt` pointing at it. For collection pages, ensure they're in
