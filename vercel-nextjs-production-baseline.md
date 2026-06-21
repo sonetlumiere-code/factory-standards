@@ -64,6 +64,10 @@ apply every **MUST**, justify any deferral, and treat **SHOULD** as the default.
   - In `drizzle.config.ts`: `url: process.env.DATABASE_URL_UNPOOLED ?? process.env.DATABASE_URL`.
   - The runtime driver should sniff the host and pick the right Neon vs node-postgres driver
     (Neon's WebSocket driver can't reach `127.0.0.1`/containers, so tests fall back to `pg`).
+    **Don't hand-roll this** — use the canonical client
+    [recipes/neon-drizzle-client](./recipes/neon-drizzle-client/). It includes the easily-
+    forgotten `neonConfig.webSocketConstructor = ws` (the Node runtime has no global WebSocket;
+    omitting it makes Neon fail in production).
 - **DB-2 (MUST)** Versioned migrations checked into git; applied via `drizzle-kit migrate`
   (never auto-`push` to prod). Run them as a deploy/build step against the unpooled URL —
   e.g. `"build": "drizzle-kit migrate && next build"`.

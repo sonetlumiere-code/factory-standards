@@ -95,4 +95,15 @@ invariants — **concurrency** (e.g. `EXCLUDE` constraint for overlapping slots)
 **state-machine transitions**, **time/timezone**, **plan entitlements/quotas** — each with an
 integration test. Ask: "what must always hold in THIS domain that a generic guard can't see?"
 
+### AP-10 — Hand-rolling the DB client (and forgetting `ws`)
+**Wrong:** each app writes its own `drizzle/db.ts` from scratch.
+**Why it's plausible:** it's a small file — "just wire drizzle to the URL."
+**Reality:** four real apps drifted four ways — one shipped **without
+`neonConfig.webSocketConstructor = ws`** (Neon fails on Vercel's Node runtime, which has no
+global WebSocket), one **inverted the host sniff**, one **didn't pass `schema`** (no typed
+`db.query`); location and `DB`/`Tx` types diverged too. A subtly-wrong client is a production
+outage or a silent type regression.
+**Right pattern:** copy [recipes/neon-drizzle-client](./recipes/neon-drizzle-client/) (DB-1) —
+the merge of the best of all four, with the mandatory `ws` line. Keep `ws` in `dependencies`.
+
 <!-- Append new anti-patterns below as dogfooding surfaces them. -->

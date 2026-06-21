@@ -11,6 +11,7 @@ the wiring steps.
 
 | Recipe | Use it when… |
 | ------ | ------------ |
+| [neon-drizzle-client](./neon-drizzle-client/) | **Any app with a database** (full-stack web / API service) — the canonical `drizzle/db.ts` (Neon serverless + `ws`, pg fallback for tests, `DB`/`Tx` types). Not optional; this is *the* client. (Baseline DB-1.) |
 | [transactional-outbox](./transactional-outbox/) | You have side effects that **must not be lost** — confirmation emails, downstream API calls, outgoing webhooks, notifications. (Baseline REL-1.) |
 
 ## How to use a recipe

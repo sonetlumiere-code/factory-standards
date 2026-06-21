@@ -50,7 +50,7 @@ Skip entirely for a static site that has no database.
 | ---------- | ---------------- | ----- | --- |
 | Database | **PostgreSQL on Neon** | 16 | Serverless Postgres, branch-per-environment, pooled + direct endpoints. |
 | ORM | **Drizzle** | 0.4x | Typed, SQL-first, no codegen runtime. Migrations via `drizzle-kit generate` + `migrate`. |
-| DB driver | **`@neondatabase/serverless`** (WebSocket) at runtime; **`pg`** for tests | — | Neon driver for the serverless fleet; `pg` for testcontainers (can't reach `127.0.0.1`). Sniff the host and branch. See [baseline DB-1](../vercel-nextjs-production-baseline.md). |
+| DB driver | **`@neondatabase/serverless`** (WebSocket) at runtime; **`pg`** for tests | — | Neon driver for the serverless fleet; `pg` for testcontainers (can't reach `127.0.0.1`). Sniff the host and branch. **Drop-in canonical client: [recipes/neon-drizzle-client](../recipes/neon-drizzle-client/)** (don't hand-roll it — it has the `ws` line apps forget). See [baseline DB-1](../vercel-nextjs-production-baseline.md). |
 | IDs | **`uuid` (`defaultRandom()`)** for app tables; text ids where an external system owns them | — | Opaque, non-enumerable, no sequence contention. |
 | Money | **integer cents** (never floats) | — | Convert at the boundary with `toCents()`/`fromCents()`; format for display only. Lint-guard the `Math.round(x*100)` pattern. |
 | Reliable side effects | **transactional outbox** (`lib/events/*`) | — | Emit in the business transaction; a dispatcher delivers with retry/dead-letter. Drop-in: [recipes/transactional-outbox](../recipes/transactional-outbox/). |
